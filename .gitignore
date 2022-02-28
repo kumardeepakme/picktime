@@ -9,6 +9,7 @@
 # Ignore Folders
 # -------------------
 node_modules/
+build/
 
 # -------------------
 # Whitelist
