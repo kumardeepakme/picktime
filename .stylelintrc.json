@@ -1,0 +1,19 @@
+{
+  "extends": ["stylelint-config-sass-guidelines", "stylelint-config-prettier"],
+  "rules": {
+    "no-duplicate-selectors": true,
+    "at-rule-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "max-nesting-depth": 4,
+    "selector-class-pattern": null,
+    "selector-no-qualifying-type": null,
+    "selector-max-id": null,
+    "order/properties-alphabetical-order": null,
+    "selector-max-compound-selectors": 5,
+    "value-no-vendor-prefix": null,
+    "property-no-vendor-prefix": null,
+    "function-parentheses-space-inside": "never-single-line",
+    "declaration-block-no-duplicate-properties": true
+  }
+}

@@ -1,0 +1,22 @@
+# -------------------
+# Ignore Files
+# -------------------
+.*
+~*
+.DS_Store
+
+# -------------------
+# Ignore Folders
+# -------------------
+node_modules/
+
+# -------------------
+# Whitelist
+# -------------------
+!.babelrc.json
+!.browserslistrc
+!.eslintrc.json
+!.gitignore
+!.npmignore
+!.prettierrc.json
+!.stylelintrc.json
