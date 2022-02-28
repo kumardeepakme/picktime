@@ -1,5 +1,11 @@
 ![PickTime](screenshot.png)
 
+![npm bundle size](https://img.shields.io/bundlephobia/min/picktime)
+[![GitHub issues](https://img.shields.io/github/issues/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime/issues)
+[![GitHub stars](https://img.shields.io/github/stars/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime/stargazers)
+[![GitHub license](https://img.shields.io/github/license/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fkumardeepakxyz%2Fpicktime)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fkumardeepakxyz%2Fpicktime)
+
 # PickTime
 
 Minimal & Lightweight, JavaScript Time Picker.
@@ -26,10 +32,8 @@ npm i picktime
 import PickTime from 'picktime';
 
 // Initialize
-new PickTime(inputElement);
+new PickTime(element);
 ```
-
-> It only supports input (_type text_) elements as of now!
 
 ## Importing CSS
 
@@ -44,14 +48,15 @@ import 'picktime/build/css/picktime.min.css';
 PickTime provides you with several options to customize your time pickers.
 
 - [animation](#animation)
-- [clock](#)
-- [displayTime](#)
-- [format](#)
-- [margin](#)
-- [minuteSteps](#)
-- [onKeys](#)
-- [onWheel](#)
-- [theme](#)
+- [clock](#clock)
+- [displayTime](#displayTime)
+- [format](#format)
+- [input](#input)
+- [margin](#margin)
+- [minuteSteps](#minuteSteps)
+- [onKeys](#onKeys)
+- [onWheel](#onWheel)
+- [theme](#theme)
 
 #### **`animation`**
 
@@ -63,10 +68,10 @@ PickTime provides you with several options to customize your time pickers.
 
 Custom Animation:
 
-Class `.picktime--animation--customName`
+Class `.picktime--animation-customName`
 
 ```css
-.picktime--animation--customName {
+.picktime--animation-customName {
   animation: 'value';
 }
 ```
@@ -94,6 +99,14 @@ Class `.picktime--animation--customName`
 | Type   | Values                          | Description                                                      |
 | ------ | ------------------------------- | ---------------------------------------------------------------- |
 | string | combinations of h, m and a \| A | Returns a string formatted according to the given format string. |
+
+#### **`input`**
+
+`''`
+
+| Type | Values | Description                                                               |
+| ---- | ------ | ------------------------------------------------------------------------- |
+| ele  | -      | Reference to an input (type text) if trigger element is not input itself. |
 
 #### **`margin`**
 
@@ -183,4 +196,10 @@ Class `.picktime--customName`
 
 ## License
 
-[MIT License](https://) © Kumar Deepak
+[MIT License](https://github.com/kumardeepakxyz/picktime/blob/main/LICENCE.md) © Kumar Deepak
+
+## Support Project
+
+If this package added value to your project, consider buying me a cup of coffee 😇
+
+[![Buy me a coffee](bmc.png)](https://www.buymeacoffee.com/kumardeepakxyz)

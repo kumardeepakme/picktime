@@ -4,6 +4,7 @@ class PickTime {
     clock: 12,
     displayTime: { hour: 12, minute: 0, meridiem: 'am' },
     format: 'hh:mm A',
+    input: '',
     margin: { top: 5, left: 0 },
     minuteSteps: 1,
     onKeys: true,
@@ -18,8 +19,15 @@ class PickTime {
     this._options = options;
 
     // # TERMINATE IF INVALID ELEMENT
-    if (!this._element || !(this._element.nodeType === 1 && this._element.nodeName === 'INPUT'))
+    if (!this._element || !this._element.nodeType === 1)
       return this._error('"element" not found or invalid');
+
+    // # CHECK IF ELEMENT IS NOT INPUT
+    if (
+      !this._isInput(this._element) &&
+      (this._options.input === '' || !this._isInput(this._options.input))
+    )
+      return this._error('element is not an input type, specify alternate with "input"');
 
     // # CHECK OPTIONS & VALIDATE
     // 1) If options & object
@@ -36,7 +44,9 @@ class PickTime {
     this.pickers = ++PickTime.pickers;
 
     // # SET ELEMENT READONLY
-    this._element.setAttribute('readonly', '');
+    !this._isInput(this._element) && this._isInput(this._options.input)
+      ? this._options.input.setAttribute('readonly', '')
+      : this._element.setAttribute('readonly', '');
 
     // # CREATE PICKER ELEMENT
     // 1) Set top & left
@@ -151,7 +161,9 @@ class PickTime {
 
               this.inputHour.value = input.value;
               this._inputDataset(this.inputHour.value, this.inputMinute.value);
-              this._dispatchChangeEvent(this._element);
+              !this._isInput(this._element) && this._isInput(this._options.input)
+                ? this._dispatchChangeEvent(this._options.input)
+                : this._dispatchChangeEvent(this._element);
             }, 0);
             break;
 
@@ -160,9 +172,12 @@ class PickTime {
               if (!Number.isInteger(input.value * 1)) input.value = 0;
 
               if (input.value * 1 > 59) input.value = 0;
+
               this.inputMinute.value = input.value;
               this._inputDataset(this.inputHour.value, this.inputMinute.value);
-              this._dispatchChangeEvent(this._element);
+              !this._isInput(this._element) && this._isInput(this._options.input)
+                ? this._dispatchChangeEvent(this._options.input)
+                : this._dispatchChangeEvent(this._element);
             }, 0);
             break;
         }
@@ -174,9 +189,10 @@ class PickTime {
 
       // 5) onKeys
       if (this._options.onKeys === true)
-        input.addEventListener('keydown', e =>
-          this._timeFormation(e, e.key === 'ArrowUp', e.key === 'ArrowDown')
-        );
+        input.addEventListener('keydown', e => {
+          if (e.key === 'ArrowUp' || e.key === 'ArrowDown')
+            this._timeFormation(e, e.key === 'ArrowUp', e.key === 'ArrowDown');
+        });
     });
 
     // 5) Meridiem onClick
@@ -185,8 +201,25 @@ class PickTime {
 
       radio.addEventListener('click', () => {
         if (radio.checked) this.radioMeridiem.value = radio.value;
-        this._dispatchChangeEvent(this._element);
+        !this._isInput(this._element) && this._isInput(this._options.input)
+          ? this._dispatchChangeEvent(this._options.input)
+          : this._dispatchChangeEvent(this._element);
         this.picker.classList.remove('picktime--active');
+      });
+
+      // On Enter/SpaceBar
+      radio.parentNode.addEventListener('keyup', e => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+
+          e.target.children[0].checked = true;
+
+          this.radioMeridiem.value = e.target.children[0].value;
+          !this._isInput(this._element) && this._isInput(this._options.input)
+            ? this._dispatchChangeEvent(this._options.input)
+            : this._dispatchChangeEvent(this._element);
+          this.picker.classList.remove('picktime--active');
+        }
       });
     });
   }
@@ -194,6 +227,11 @@ class PickTime {
   // * Error
   _error(message) {
     console.error(Error(message));
+  }
+
+  // * isInput
+  _isInput(el) {
+    return el.nodeType === 1 && el.nodeName === 'INPUT';
   }
 
   // * isObject
@@ -353,7 +391,9 @@ class PickTime {
 
         this.inputHour.value = ('0' + this._hour).slice(-2);
         this._inputDataset(this._hour, this._minute);
-        this._dispatchChangeEvent(this._element);
+        !this._isInput(this._element) && this._isInput(this._options.input)
+          ? this._dispatchChangeEvent(this._options.input)
+          : this._dispatchChangeEvent(this._element);
         break;
 
       case 'pickerMinute':
@@ -389,7 +429,9 @@ class PickTime {
         this.inputMinute.value = ('0' + this._minute).slice(-2);
         this.inputHour.value = ('0' + this._hour).slice(-2);
         this._inputDataset(this._hour, this._minute);
-        this._dispatchChangeEvent(this._element);
+        !this._isInput(this._element) && this._isInput(this._options.input)
+          ? this._dispatchChangeEvent(this._options.input)
+          : this._dispatchChangeEvent(this._element);
         break;
     }
   }
