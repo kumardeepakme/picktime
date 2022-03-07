@@ -10,11 +10,14 @@
 # -------------------
 node_modules/
 build/
+examples/
+test/
 
 # -------------------
 # Whitelist
 # -------------------
 !.babelrc.json
+!.babelrc
 !.browserslistrc
 !.eslintrc.json
 !.gitignore

@@ -1,3 +1,18 @@
+## 1.0.0-rc
+
+**Added:**
+
+- Added CJS, ESM & UMD modules.
+- Non Module Environment can pull `PickTime` from `jsdelivr`.
+
+**Documentation:**
+
+- README.MD file updated.
+
+**Fixed:**
+
+- Duplicate naming of AM/PM radio buttons (on seperate instances).
+
 ## 1.0.0-beta
 
 **Added:**

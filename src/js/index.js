@@ -1,4 +1,6 @@
-class PickTime {
+import '../scss/index.scss';
+
+export default class PickTime {
   _defaults = {
     animation: 'drop',
     clock: 12,
@@ -69,7 +71,7 @@ class PickTime {
     this.picker.setAttribute('tabindex', '-1');
     this.picker.style.top = `${Math.ceil(top)}px`;
     this.picker.style.left = `${Math.ceil(left)}px`;
-    this.picker.innerHTML = this._template('digital', this.pickers);
+    this.picker.innerHTML = this._template('digital', this.pickers + Date.now());
 
     // 3) Append picker
     document.querySelector('body').appendChild(this.picker);
@@ -448,6 +450,3 @@ class PickTime {
     return html;
   }
 }
-
-// Export
-module.exports = PickTime;

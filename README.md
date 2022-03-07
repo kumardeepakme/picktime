@@ -4,7 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime/issues)
 [![GitHub stars](https://img.shields.io/github/stars/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime/stargazers)
 [![GitHub license](https://img.shields.io/github/license/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime)
-[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fkumardeepakxyz%2Fpicktime)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fkumardeepakxyz%2Fpicktime)
+[![](https://data.jsdelivr.com/v1/package/npm/picktime/badge)](https://www.jsdelivr.com/package/npm/picktime)
 
 # PickTime
 
@@ -13,8 +13,11 @@ Minimal & Lightweight, JavaScript Time Picker.
 ## Features
 
 - Lightweight
-- No Dependencies
 - Minimal Design
+- Manual Input
+- Mouse Wheel Controls
+- Up & Down Arrow Controls
+- Zero Dependencies
 - Fully Customizable CSS
 
 ## Installation
@@ -28,7 +31,10 @@ npm i picktime
 ## Usage
 
 ```js
-// Import
+// CJS
+const PickTime = require('picktime');
+
+// ESM
 import PickTime from 'picktime';
 
 // Initialize
@@ -41,6 +47,18 @@ You will find CSS files in the `build/css` directory.
 
 ```js
 import 'picktime/build/css/picktime.min.css';
+```
+
+#### **Non Module Env**
+
+For non-module environments, its recommended to pull `PickTime` from `jsDelivr` as follow:
+
+```html
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picktime/build/css/picktime.min.css">
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/picktime/build/umd/picktime.min.js"></script>
 ```
 
 ## Options

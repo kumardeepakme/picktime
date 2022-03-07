@@ -2,15 +2,22 @@
   "name": "picktime",
   "version": "1.0.0-beta",
   "description": "Minimal & Lightweight, JavaScript Time Picker.",
-  "main": "build/picktime.min.js",
+  "main": "./build/picktime.min.js",
+  "module": "./build/esm/picktime.min.js",
+  "browser": "./build/umd/picktime.min.js",
+  "jsdelivr": "./build/umd/picktime.min.js",
+  "browserslist": [
+    "last 2 years",
+    "maintained node versions"
+  ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "scripts": {
     "prepublishOnly": "npm run build",
     "dev": "concurrently --kill-others \"npm run watch*\"",
-    "build": "rm -rf build && mkdir build && npm run compile:js && npm run compile:css",
-    "watch:js": "babel src/js/index.js -w --out-file build/picktime.min.js",
-    "watch:css": "sass --no-source-map -w src/scss/index.scss build/css/picktime.css",
-    "compile:js": "babel src/js/index.js --out-file build/picktime.js && babel src/js/index.js --presets minify --out-file build/picktime.min.js",
-    "compile:css": "sass --no-source-map src/scss/index.scss build/css/picktime.css && sass --no-source-map --style=compressed src/scss/index.scss build/css/picktime.min.css && postcss build/css/*.css --no-map -u autoprefixer --dir build/css/"
+    "build": "rm -r build/* && npm run compile",
+    "compile": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -32,18 +39,18 @@
   },
   "homepage": "https://github.com/kumardeepakxyz/picktime#readme",
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
+    "@rollup/plugin-babel": "^5.3.1",
     "autoprefixer": "^10.4.2",
-    "babel-loader": "^8.2.3",
-    "babel-preset-minify": "^0.5.1",
     "concurrently": "^7.0.0",
     "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.4.0",
-    "postcss": "^8.4.7",
-    "postcss-cli": "^9.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "postcss": "^8.4.8",
     "prettier": "^2.5.1",
+    "rollup": "^2.70.0",
+    "rollup-plugin-scss": "^3.0.0",
+    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.49.9",
     "stylelint": "^14.5.3",
     "stylelint-config-prettier": "^9.0.3",
