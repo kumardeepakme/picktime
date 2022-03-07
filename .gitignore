@@ -4,6 +4,7 @@
 .*
 ~*
 .DS_Store
+package-lock.json
 
 # -------------------
 # Ignore Folders
@@ -16,9 +17,7 @@ test/
 # -------------------
 # Whitelist
 # -------------------
-!.babelrc.json
 !.babelrc
-!.browserslistrc
 !.eslintrc.json
 !.gitignore
 !.npmignore
