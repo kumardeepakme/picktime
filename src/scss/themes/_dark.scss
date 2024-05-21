@@ -1,40 +1,28 @@
 .picktime--dark {
-  --pt-black: #1e0f3d;
-  --pt-white: #fff;
-  --pt-primary: #d7caf2;
+  $primary: #eaeaee;
+
+  // Primary
+  --pt-primary: #{$primary};
 
   // PickTime
   --pt-background: #1e0f3d;
-  --pt-borderColor: #1e0f3d;
-  --pt-border: 1px solid var(--pt-borderColor);
-  --pt-borderRadius: 12px;
-  --pt-boxShadowColor: #{rgba(#1e0f3d, 0.1)};
-  --pt-boxShadow: 0 4px 20px 0 var(--pt-boxShadowColor);
-  --pt-padding: 10px;
+  --pt-bordercolor: #1e0f3d;
+  --pt-boxshadowcolor: #{rgba(#1e0f3d, 0.6)};
 
   // Input
   --pt-input-color: #{rgba(#fff, 0.88)};
-  --pt-input-fontSize: 36px;
   --pt-input-background: #1e0f3d;
-  --pt-input-borderColor: #{rgba(#d7caf2, 0.2)};
-  --pt-input-border: 1px solid var(--pt-input-borderColor);
-  --pt-input-borderRadius: 8px;
-  --pt-inputFocus-borderColor: #{rgba(#d7caf2, 0.4)};
-  --pt-inputFocus-background: #{rgba(#d7caf2, 0.08)};
-  --pt-inputFocus-boxShadowColor: #{rgba(#d7caf2, 0.3)};
-  --pt-inputFocus-boxShadow: 0 0 0.5px 1.5px var(--pt-inputFocus-boxShadowColor);
+  --pt-input-bordercolor: #{rgba($primary, 0.2)};
+  --pt-inputfocus-bordercolor: #{rgba($primary, 0.4)};
+  --pt-inputfocus-background: #{rgba($primary, 0.08)};
+  --pt-inputfocus-boxshadowcolor: #{rgba($primary, 0.3)};
 
   // Dots
   --pt-dots-color: #{rgba(#fff, 0.88)};
 
   // Meridiem
-  --pt-meridiem-border: var(--pt-input-border);
-  --pt-meridiem-borderRadius: 8px;
-  --pt-meridiemLabel-border: var(--pt-input-border);
-  --pt-meridiemSpan-color: #{rgba(#fff, 0.6)};
-  --pt-meridiemSpan-fontSize: 15.5px;
-  --pt-meridiemSpanHover-color: var(--pt-primary);
-  --pt-meridiemSpanHover-background: #{rgba(#9370db, 0.08)};
-  --pt-meridiemChecked-color: var(--pt-primary);
-  --pt-meridiemChecked-background: #{rgba(#9370db, 0.2)};
+  --pt-meridiemspan-color: #{rgba(#fff, 0.6)};
+  --pt-meridiemspanhover-color: var(--pt-primary);
+  --pt-meridiemspanhover-background: #{rgba($primary, 0.08)};
+  --pt-meridiemchecked-background: #{rgba($primary, 0.2)};
 }

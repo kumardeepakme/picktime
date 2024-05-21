@@ -1,0 +1,18 @@
+.picktime--light,
+.picktime--dark {
+  --pt-black: #000;
+  --pt-white: #fff;
+  --pt-borderradius: 12px;
+  --pt-border: 1px solid var(--pt-bordercolor);
+  --pt-padding: 10px;
+  --pt-input-fontsize: 30px;
+  --pt-input-borderradius: 6px;
+  --pt-boxshadow: 0 1px 8px var(--pt-boxshadowcolor);
+  --pt-input-border: 1px solid var(--pt-input-bordercolor);
+  --pt-inputfocus-boxshadow: 0 0 0.5px 1.5px var(--pt-inputfocus-boxshadowcolor);
+  --pt-meridiem-border: var(--pt-input-border);
+  --pt-meridiemlabel-border: var(--pt-input-border);
+  --pt-meridiemspan-fontsize: 10px;
+  --pt-meridiemchecked-color: var(--pt-primary);
+  --pt-meridiem-borderradius: 6px;
+}

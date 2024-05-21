@@ -11,13 +11,13 @@ package-lock.json
 # -------------------
 node_modules/
 build/
-examples/
-test/
+dist/
 
 # -------------------
 # Whitelist
 # -------------------
 !.babelrc
+!.editorconfig
 !.eslintrc.json
 !.gitignore
 !.npmignore

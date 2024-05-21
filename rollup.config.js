@@ -1,38 +1,45 @@
-import path from 'path';
-import scss from 'rollup-plugin-scss';
-import autoprefixer from 'autoprefixer';
 import postcss from 'postcss';
+import autoprefixer from 'autoprefixer';
+import scss from 'rollup-plugin-scss';
 import babel from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 
 export default {
-  input: 'src/js/index.js',
+  input: 'src/js/index.ts',
+
   output: [
     {
-      file: path.resolve('build/picktime.min.js'),
-      format: 'cjs',
-      exports: 'default',
+      file: 'dist/picktime.min.js',
+      format: 'es',
     },
     {
-      file: path.resolve('build/esm/picktime.min.js'),
-      format: 'esm',
-    },
-    {
-      file: path.resolve('build/umd/picktime.min.js'),
+      file: 'dist/picktime.umd.js',
       format: 'umd',
       name: 'PickTime',
     },
   ],
+
   plugins: [
     scss({
-      output: path.resolve('build/css/picktime.min.css'),
+      fileName: 'picktime.min.css',
       processor: () => postcss([autoprefixer]),
       outputStyle: 'compressed',
+      watch: ['src/scss'],
+      include: ['src/scss/**'],
+      exclude: ['node_modules/**'],
     }),
     babel({
+      extensions: ['.ts'],
       babelHelpers: 'bundled',
-      exclude: 'node_modules/**',
+      presets: ['@babel/preset-typescript'],
+      exclude: ['node_modules/**'],
     }),
+    resolve(),
+    commonjs(),
     terser(),
+    typescript({ noForceEmit: true }),
   ],
 };

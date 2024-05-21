@@ -1,10 +1,8 @@
 ![PickTime](screenshot.png)
 
 ![npm bundle size](https://img.shields.io/bundlephobia/min/picktime)
-[![GitHub issues](https://img.shields.io/github/issues/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime/issues)
-[![GitHub stars](https://img.shields.io/github/stars/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime/stargazers)
 [![GitHub license](https://img.shields.io/github/license/kumardeepakxyz/picktime)](https://github.com/kumardeepakxyz/picktime)
-[![](https://data.jsdelivr.com/v1/package/npm/picktime/badge)](https://www.jsdelivr.com/package/npm/picktime)
+[![](https://data.jsdelivr.com/v1/package/npm/picktime/badge?style=rounded)](https://www.jsdelivr.com/package/npm/picktime)
 
 # PickTime
 
@@ -78,7 +76,7 @@ PickTime provides you with several options to customize your time pickers.
 
 #### **`animation`**
 
-`drop`
+`default`: `drop`
 
 | Type   | Values       | Description                                                                                                                                            |
 | ------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -171,41 +169,41 @@ You can easily customize PickTime style by using and changing CSS variables.
 ```css
 /* Main Container */
 --pt-background: color;
---pt-borderColor: color;
---pt-borderRadius: value;
---pt-boxShadowColor: color;
+--pt-bordercolor: color;
+--pt-borderradius: value;
+--pt-boxshadowcolor: color;
 
 /* Input */
 --pt-input-color: color;
---pt-input-fontSize: value;
+--pt-input-fontsize: value;
 --pt-input-background: color;
---pt-input-borderColor: color;
---pt-input-borderRadius: value;
---pt-inputFocus-borderColor: color;
+--pt-input-bordercolor: color;
+--pt-input-borderradius: value;
+--pt-inputFocus-bordercolor: color;
 --pt-inputFocus-background: color;
---pt-inputFocus-boxShadowColor: color;
+--pt-inputFocus-boxshadowcolor: color;
 
 /* Dots */
 --pt-dots-color: color;
 
 /* Meridiem */
---pt-meridiem-borderColor: color;
---pt-meridiem-borderRadius: value;
---pt-meridiemLabel-borderColor: color;
---pt-meridiemSpan-color: color;
---pt-meridiemSpan-fontSize: value;
---pt-meridiemSpanHover-color: color;
---pt-meridiemSpanHover-background: color;
---pt-meridiemChecked-color: color;
---pt-meridiemChecked-background: color;
+--pt-meridiem-bordercolor: color;
+--pt-meridiem-borderradius: value;
+--pt-meridiemLabel-bordercolor: color;
+--pt-meridiemspan-color: color;
+--pt-meridiemspan-fontsize: value;
+--pt-meridiemspanhover-color: color;
+--pt-meridiemspanhover-background: color;
+--pt-meridiemchecked-color: color;
+--pt-meridiemchecked-background: color;
 ```
 
 Custom Theme:
 
-Class `.picktime--customName`
+Class `.picktime--customname`
 
 ```css
-.picktime--customName {
+.picktime--customname {
   --pt-background: #fff;
   --pt-borderColor: #000;
   --pt-borderRadius: 10px;

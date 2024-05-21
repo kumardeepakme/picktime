@@ -1,20 +1,22 @@
 // Picker
 .picktime {
   position: absolute;
-  max-width: 212px;
+  top: 0;
+  left: 0;
+  width: max-content;
   direction: ltr;
   display: none;
   opacity: 0;
   visibility: hidden;
-  overflow: hidden;
   z-index: 99999;
   outline: 0 none;
   box-sizing: border-box;
+  line-height: 1;
   font-family: inherit;
-  background: var(--pt-background);
   border: var(--pt-border);
-  border-radius: var(--pt-borderRadius);
-  box-shadow: var(--pt-boxShadow);
+  background: var(--pt-background);
+  border-radius: var(--pt-borderradius);
+  filter: drop-shadow(var(--pt-boxshadow));
   padding: var(--pt-padding);
 
   &::before,
@@ -22,73 +24,46 @@
     box-sizing: border-box;
   }
 
-  &--active {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    visibility: visible;
-  }
-
-  &--clock-24 {
-    .picktime__meridiem {
-      display: none;
-    }
-  }
-
-  &--animation-fade {
-    animation: picktime-fade 0.3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  }
-
-  &--animation-drop {
-    animation: picktime-drop 0.3s cubic-bezier(0.17, 0.84, 0.44, 1) both;
-  }
-
   * {
     box-sizing: border-box;
     font-family: inherit;
+    line-height: inherit;
 
     &::before,
     &::after {
       box-sizing: border-box;
     }
   }
-}
 
-// Picker Body
-.picktime__body {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-}
-
-// Hour, Minute & Dots
-.picktime__box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  // Body
+  &--body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   &--input {
     width: 58px;
-    height: 58px;
+    aspect-ratio: 1 / 1;
     padding: 5px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1;
     text-align: center;
     outline: 0 none;
     box-shadow: none;
     color: var(--pt-input-color);
-    font-size: var(--pt-input-fontSize);
+    font-size: var(--pt-input-fontsize);
     background: var(--pt-input-background);
     border: var(--pt-input-border);
-    border-radius: var(--pt-input-borderRadius);
-    transition: border-color 0.2s ease-in, background-color 0.2s ease-in;
+    border-radius: var(--pt-input-borderradius);
+    transition:
+      border-color 0.2s ease-in,
+      background-color 0.2s ease-in;
 
     &:focus {
-      border-color: var(--pt-inputFocus-borderColor);
-      background: var(--pt-inputFocus-background);
-      box-shadow: var(--pt-inputFocus-boxShadow);
+      border-color: var(--pt-inputfocus-bordercolor);
+      background: var(--pt-inputfocus-background);
     }
 
     &::selection {
@@ -97,86 +72,156 @@
   }
 
   &--dots {
+    width: 6px;
+    height: 24px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin: 0 8px;
-    user-select: none;
-
-    &-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 30px;
-      background: var(--pt-dots-color);
-
-      &:not(:last-of-type) {
-        margin: 0 0 12px;
-      }
-    }
-  }
-}
-
-// Meridiem
-.picktime__meridiem {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  max-height: 58px;
-  margin: 0 0 0 10px;
-  overflow: hidden;
-  border: var(--pt-meridiem-border);
-  border-radius: var(--pt-meridiem-borderRadius);
-
-  &--label {
-    position: relative;
-    display: block;
-    width: 100%;
-    outline: 0 none;
-    max-height: 50px;
-    user-select: none;
-
-    &:not(:last-of-type) {
-      border-bottom: var(--pt-meridiemLabel-border);
-    }
-
-    &:focus {
-      .picktime__meridiem--span {
-        color: var(--pt-meridiemSpanHover-color);
-        background: var(--pt-meridiemSpanHover-background);
-      }
-    }
-  }
-
-  &--span {
-    display: block;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--pt-meridiemSpan-color);
-    font-size: var(--pt-meridiemSpan-fontSize);
-    padding: 6px 5px;
-    line-height: 1;
-    cursor: pointer;
-    transition: color 0.2s ease-in, background-color 0.2s ease-in;
-
-    &:hover {
-      color: var(--pt-meridiemSpanHover-color);
-      background: var(--pt-meridiemSpanHover-background);
-    }
-  }
-
-  &--radio {
-    width: 0;
-    height: 0;
-    opacity: 0;
-    display: none;
-    appearance: none;
-    border-radius: 0;
+    padding: 0 10px;
     user-select: none;
     pointer-events: none;
 
-    &:checked + .picktime__meridiem--span {
-      color: var(--pt-meridiemChecked-color);
-      background: var(--pt-meridiemChecked-background);
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pt-dots-color);
     }
+
+    &::after {
+      bottom: 0;
+    }
+
+    &::before {
+      top: 0;
+    }
+  }
+
+  // Meridiem
+  &__meridiem {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: center;
+    height: 58px;
+    margin: 0 0 0 10px;
+
+    &--switch {
+      flex: 1 1 calc(50% / 2);
+      position: relative;
+      display: flex;
+      width: 100%;
+      outline: 0 none;
+      max-height: 50px;
+      user-select: none;
+    }
+
+    &--label {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      font-weight: 700;
+      border: var(--pt-meridiem-border);
+      border-radius: var(--pt-meridiem-borderradius);
+      color: var(--pt-meridiemspan-color);
+      font-size: var(--pt-meridiemspan-fontsize);
+      line-height: 1;
+      cursor: pointer;
+      padding: 5px;
+      transition:
+        color 0.2s ease-in,
+        background-color 0.2s ease-in;
+
+      &:hover {
+        color: var(--pt-meridiemspanhover-color);
+        background: var(--pt-meridiemspanhover-background);
+      }
+
+      span {
+        user-select: none;
+        pointer-events: none;
+      }
+    }
+
+    &--switch:focus .picktime__meridiem--label {
+      color: var(--pt-meridiemspanhover-color);
+      background: var(--pt-meridiemspanhover-background);
+    }
+
+    &--radio {
+      width: 0;
+      height: 0;
+      opacity: 0;
+      display: none;
+      appearance: none;
+      border-radius: 0;
+      user-select: none;
+      pointer-events: none;
+
+      &:checked + .picktime__meridiem--label {
+        color: var(--pt-meridiemchecked-color);
+        background: var(--pt-meridiemchecked-background);
+        border-color: var(--pt-meridiemchecked-background);
+      }
+    }
+  }
+
+  // Arrow
+  &--arrow {
+    position: absolute;
+    width: 16px;
+    height: 6px;
+    user-select: none;
+    pointer-events: none;
+
+    svg {
+      position: absolute;
+      inset: 0;
+      fill: var(--pt-background);
+
+      &:first-of-type {
+        margin-top: -1px;
+        transform: scale(1.1);
+        fill: var(--pt-bordercolor);
+      }
+
+      &:last-of-type {
+        fill: var(--pt-background);
+      }
+    }
+
+    &-top {
+      transform: rotate(0deg);
+    }
+
+    &-bottom {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Helpers
+  &--active {
+    display: inline-block;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &--animation-fade {
+    animation: picktime-fade 0.24s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  }
+
+  &--animation-drop {
+    animation: picktime-drop 0.24s cubic-bezier(0.17, 0.84, 0.44, 1) both;
+  }
+
+  &--clock-24 .picktime__meridiem {
+    display: none;
   }
 }
