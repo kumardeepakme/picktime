@@ -51,8 +51,8 @@ export class PickerTemplate {
   }
 
   position() {
-    const left = this.#options.margin?.left || 0;
-    const top = this.#options.margin?.top || 0;
+    const left = this.#options.offset?.left || 0;
+    const top = this.#options.offset?.top || 0;
     const arrowEl = <HTMLElement>this.#picker.querySelector('.picktime--arrow');
 
     autoUpdate(this.#inputEl, this.#picker, () => {
@@ -122,11 +122,11 @@ export class PickerTemplate {
   }
 
   get #showMeridiem() {
-    return this.#options?.format ? this.#options.format.includes('A') : false;
+    return this.#options.clock === 12 ?? false;
   }
 
   get #showArrow() {
-    return this.#options?.arrow ? this.#options.arrow : false;
+    return this.#options.arrow ?? false;
   }
 
   get picker(): HTMLDivElement {

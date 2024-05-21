@@ -5,7 +5,7 @@ export class TimeFormatter {
   clock: number;
   hours: number;
   minutes: number;
-  meridiem: string;
+  meridiem: string | null;
   minuteSteps: number;
   isUpDownKeys: boolean;
   isWheelSpin: boolean;
@@ -15,10 +15,10 @@ export class TimeFormatter {
   minutesInputEl: HTMLInputElement;
   meridiemInputEls: NodeListOf<HTMLInputElement>;
   #time!: {
-    time: string;
-    meridiem: string | null;
-    utcOffset: string;
     displayTime: string;
+    meridiem: string | null;
+    time: string;
+    utcOffset: string;
   };
 
   constructor(
@@ -49,8 +49,6 @@ export class TimeFormatter {
       radio.addEventListener('click', () => {
         this.meridiem = radio.value.toLowerCase();
         this.#setTime(this.hours, this.minutes, this.meridiem);
-
-        console.log('⏱️', this.#time);
       });
     });
 
@@ -61,20 +59,18 @@ export class TimeFormatter {
 
   #setTime(hours: number, minutes: number, meridiem: string) {
     // Validating Hours, Minutes & Meridiem
+    this.hours = Math.abs(hours);
+    this.minutes = Math.abs(minutes);
     switch (this.clock) {
       case 24:
+        if (this.hours > 23) this.hours = 23;
+        if (this.minutes === 60) this.minutes = 0;
+        this.meridiem = null;
         break;
 
       default:
-        // Hours
-        this.hours = Math.abs(hours);
         if (this.hours > 12) this.hours = 12;
-
-        // Minutes
-        this.minutes = Math.abs(minutes);
-        if (this.minutes >= 60) this.minutes = 0;
-
-        // Meridiem
+        if (this.minutes === 60) this.minutes = 0;
         this.meridiem =
           meridiem.toLowerCase() !== 'am' && meridiem.toLowerCase() !== 'pm'
             ? 'am'
@@ -85,25 +81,32 @@ export class TimeFormatter {
     // Updating PickerInputEls Value
     this.hoursInputEl.value = String(this.hours).padStart(2, '0');
     this.minutesInputEl.value = String(this.minutes).padStart(2, '0');
-    this.meridiemInputEls.forEach(radio => {
-      if (radio.value.toLowerCase() === this.meridiem.toLowerCase())
-        radio.checked = true;
-    });
+    if (this.clock === 12) {
+      this.meridiemInputEls.forEach(radio => {
+        if (radio.value.toLowerCase() === this.meridiem!.toLowerCase())
+          radio.checked = true;
+      });
+    }
 
+    // Setting InputEl Value
     const displayTime: string =
       this.clock === 12
-        ? `${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')} ${this.meridiem.toUpperCase()}`
+        ? `${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')} ${this.meridiem!.toUpperCase()}`
         : `${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')}`;
-
     this.inputEl.value = displayTime;
 
     // Updating Return Time
     this.#time = {
-      time: `${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')}:00`,
-      meridiem: this.clock === 12 ? this.meridiem : null,
-      utcOffset: this.#utcOffset(),
       displayTime,
+      meridiem: this.clock === 12 ? this.meridiem : null,
+      time: `${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')}`,
+      utcOffset: this.#utcOffset(),
     };
+
+    // Dispatching Change Event
+    this.inputEl.dispatchEvent(
+      new Event('change', { bubbles: true, cancelable: true })
+    );
   }
 
   #restrictInput() {
@@ -150,8 +153,8 @@ export class TimeFormatter {
 
     switch (this.clock) {
       case 24:
-        if (this.hours < 0) this.hours = 24;
-        if (this.hours > 24) this.hours = 0;
+        if (this.hours < 0) this.hours = 23;
+        if (this.hours > 23) this.hours = 0;
         break;
 
       default:
@@ -160,9 +163,7 @@ export class TimeFormatter {
         break;
     }
 
-    this.#setTime(this.hours, this.minutes, this.meridiem);
-
-    console.log('⏱️', this.#time);
+    this.#setTime(this.hours, this.minutes, this.meridiem!);
   }
 
   #handleMinutes(plus: boolean, minus: boolean) {
@@ -189,7 +190,7 @@ export class TimeFormatter {
 
       switch (this.clock) {
         case 24:
-          if (this.hours === 24) this.hours = 0;
+          if (this.hours === 23) this.hours = 0;
           this.hours += 1;
           break;
 
@@ -199,13 +200,8 @@ export class TimeFormatter {
           break;
       }
     }
-    if (this.minutes > 0) {
-      if (this.hours === 24) this.hours = 0;
-    }
 
-    this.#setTime(this.hours, this.minutes, this.meridiem);
-
-    console.log('⏱️', this.#time);
+    this.#setTime(this.hours, this.minutes, this.meridiem!);
   }
 
   #utcOffset() {

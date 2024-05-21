@@ -10,13 +10,12 @@ export class PickTime {
     animation: 'drop',
     arrow: true,
     clock: 12,
-    time: { hours: 12, minutes: 0, meridiem: 'am' },
-    format: 'hh:mm A',
-    margin: { top: 3, left: 0 },
     minuteSteps: 1,
+    offset: { left: 0, top: 3 },
+    theme: 'light',
+    time: { hours: 12, minutes: 0, meridiem: 'am' },
     upDownKeys: true,
     wheelSpin: true,
-    theme: 'light',
   };
   static pickers: number = 0;
   #PickerTemplate!: PickerTemplate;
@@ -44,11 +43,6 @@ export class PickTime {
       this.#PickerTemplate.picker,
       PickTime.pickers
     );
-
-    // console.log('👉 INPUT_ELEMENT', this.#inputEl);
-    // console.log('👉 OPTIONS', this.#options);
-    // console.log('👉 PICKER_COUNT', PickTime.pickers);
-    // console.log('👉 PICKER_DIV', this.#picker);
   }
 
   #loadTemplate(
