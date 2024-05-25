@@ -64,9 +64,12 @@ export class PickerTemplate {
       computePosition(this.#inputEl, this.#picker, {
         placement: 'bottom-start',
         middleware: [
-          offset(top),
+          offset({
+            crossAxis: left,
+            mainAxis: top,
+          }),
           flip(),
-          shift({ padding: left }),
+          shift({ padding: 5 }),
           this.#showArrow && arrowEl && arrow({ element: arrowEl }),
         ],
       }).then(({ x, y, placement, middlewareData }) => {
@@ -90,7 +93,7 @@ export class PickerTemplate {
           if (arrowEl) arrowEl.classList.add(`picktime--arrow-${arrowSide}`);
 
           Object.assign(arrowEl.style, {
-            left: '18px',
+            left: '15px',
             top: arrowY != null ? `${arrowY}px` : '',
             right: '',
             bottom: '',
