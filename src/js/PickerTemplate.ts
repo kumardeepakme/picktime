@@ -124,12 +124,12 @@ export class PickerTemplate {
     return arrow;
   }
 
-  get #showMeridiem() {
-    return this.#options.clock === 12 ?? false;
+  get #showMeridiem(): boolean {
+    return this.#options.clock === 12;
   }
 
-  get #showArrow() {
-    return this.#options.arrow ?? false;
+  get #showArrow(): boolean {
+    return this.#options.arrow!;
   }
 
   get picker(): HTMLDivElement {

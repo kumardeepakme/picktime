@@ -15,8 +15,8 @@
   font-family: inherit;
   border: var(--pt-border);
   background: var(--pt-background);
-  border-radius: var(--pt-borderradius);
-  filter: drop-shadow(var(--pt-boxshadow));
+  border-radius: var(--pt-border-radius);
+  filter: drop-shadow(var(--pt-box-shadow));
   padding: var(--pt-padding);
 
   &::before,
@@ -28,6 +28,7 @@
     box-sizing: border-box;
     font-family: inherit;
     line-height: inherit;
+    outline: 0 none;
 
     &::before,
     &::after {
@@ -48,22 +49,20 @@
     aspect-ratio: 1 / 1;
     padding: 5px;
     font-weight: 700;
-    line-height: 1;
     text-align: center;
-    outline: 0 none;
     box-shadow: none;
     color: var(--pt-input-color);
-    font-size: var(--pt-input-fontsize);
+    font-size: var(--pt-input-font-size);
     background: var(--pt-input-background);
     border: var(--pt-input-border);
-    border-radius: var(--pt-input-borderradius);
+    border-radius: var(--pt-input-border-radius);
     transition:
-      border-color 0.2s ease-in,
-      background-color 0.2s ease-in;
+      border-color 0.2s var(--pt-animation),
+      background-color 0.2s var(--pt-animation);
 
     &:focus {
-      border-color: var(--pt-inputfocus-bordercolor);
-      background: var(--pt-inputfocus-background);
+      border-color: var(--pt-input-focus-border-color);
+      background: var(--pt-input-focus-background);
     }
 
     &::selection {
@@ -129,19 +128,19 @@
       text-transform: uppercase;
       font-weight: 700;
       border: var(--pt-meridiem-border);
-      border-radius: var(--pt-meridiem-borderradius);
-      color: var(--pt-meridiemspan-color);
-      font-size: var(--pt-meridiemspan-fontsize);
+      border-radius: var(--pt-meridiem-border-radius);
+      color: var(--pt-meridiem-color);
+      font-size: var(--pt-meridiem-font-size);
       line-height: 1;
       cursor: pointer;
       padding: 5px;
       transition:
-        color 0.2s ease-in,
-        background-color 0.2s ease-in;
+        color 0.2s var(--pt-animation),
+        background-color 0.2s var(--pt-animation);
 
       &:hover {
-        color: var(--pt-meridiemspanhover-color);
-        background: var(--pt-meridiemspanhover-background);
+        color: var(--pt-meridiem-hover-color);
+        background: var(--pt-meridiem-hover-background);
       }
 
       span {
@@ -151,8 +150,8 @@
     }
 
     &--switch:focus .picktime__meridiem--label {
-      color: var(--pt-meridiemspanhover-color);
-      background: var(--pt-meridiemspanhover-background);
+      color: var(--pt-meridiem-hover-color);
+      background: var(--pt-meridiem-hover-background);
     }
 
     &--radio {
@@ -166,9 +165,9 @@
       pointer-events: none;
 
       &:checked + .picktime__meridiem--label {
-        color: var(--pt-meridiemchecked-color);
-        background: var(--pt-meridiemchecked-background);
-        border-color: var(--pt-meridiemchecked-background);
+        color: var(--pt-meridiem-checked-color);
+        background: var(--pt-meridiem-checked-background);
+        border-color: var(--pt-meridiem-checked-background);
       }
     }
   }
@@ -180,16 +179,20 @@
     height: 6px;
     user-select: none;
     pointer-events: none;
+    transition: none;
+    animation: none;
 
     svg {
       position: absolute;
       inset: 0;
       fill: var(--pt-background);
+      transition: inherit;
+      animation: inherit;
 
       &:first-of-type {
         margin-top: -1px;
         transform: scale(1.1);
-        fill: var(--pt-bordercolor);
+        fill: var(--pt-border-color);
       }
 
       &:last-of-type {
@@ -208,17 +211,18 @@
 
   // Helpers
   &--active {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     visibility: visible;
-    opacity: 1;
   }
 
   &--animation-fade {
-    animation: picktime-fade 0.24s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    animation: picktime-fade 0.25s var(--pt-animation) both;
   }
 
   &--animation-drop {
-    animation: picktime-drop 0.24s cubic-bezier(0.17, 0.84, 0.44, 1) both;
+    animation: picktime-drop 0.25s var(--pt-animation) both;
   }
 
   &--clock-24 .picktime__meridiem {

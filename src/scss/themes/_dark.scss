@@ -1,28 +1,28 @@
-.picktime--dark {
-  $primary: #eaeaee;
+@use 'sass:color';
 
-  // Primary
-  --pt-primary: #{$primary};
+.picktime--dark {
+  // Main
+  --pt-background: #{$dark};
+  --pt-foreground: #{$light};
 
   // PickTime
-  --pt-background: #1e0f3d;
-  --pt-bordercolor: #1e0f3d;
-  --pt-boxshadowcolor: #{rgba(#1e0f3d, 0.6)};
+  --pt-border-color: #{color.adjust($dark, $lightness: -5%)};
+  --pt-box-shadow-color: #{color.adjust($dark, $alpha: -0.55)};
 
   // Input
-  --pt-input-color: #{rgba(#fff, 0.88)};
-  --pt-input-background: #1e0f3d;
-  --pt-input-bordercolor: #{rgba($primary, 0.2)};
-  --pt-inputfocus-bordercolor: #{rgba($primary, 0.4)};
-  --pt-inputfocus-background: #{rgba($primary, 0.08)};
-  --pt-inputfocus-boxshadowcolor: #{rgba($primary, 0.3)};
+  --pt-input-color: var(--pt-foreground);
+  --pt-input-background: var(--pt-background);
+  --pt-input-border-color: #{color.adjust($dark, $lightness: 15%)};
+  --pt-input-focus-border-color: #{color.adjust($dark, $lightness: 25%)};
+  --pt-input-focus-background: #{color.adjust($dark, $lightness: 5%)};
 
   // Dots
-  --pt-dots-color: #{rgba(#fff, 0.88)};
+  --pt-dots-color: #{color.adjust($light, $alpha: -0.2)};
 
   // Meridiem
-  --pt-meridiemspan-color: #{rgba(#fff, 0.6)};
-  --pt-meridiemspanhover-color: var(--pt-primary);
-  --pt-meridiemspanhover-background: #{rgba($primary, 0.08)};
-  --pt-meridiemchecked-background: #{rgba($primary, 0.2)};
+  --pt-meridiem-color: #{$light};
+  --pt-meridiem-hover-color: #{$light};
+  --pt-meridiem-hover-background: #{color.adjust($dark, $lightness: 5%)};
+  --pt-meridiem-checked-color: var(--pt-background);
+  --pt-meridiem-checked-background: var(--pt-foreground);
 }

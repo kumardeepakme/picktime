@@ -169,33 +169,33 @@ You can easily customize PickTime style by using and changing CSS variables.
 ```css
 /* Main Container */
 --pt-background: color;
---pt-bordercolor: color;
---pt-borderradius: value;
---pt-boxshadowcolor: color;
+--pt-border-color: color;
+--pt-border-radius: value;
+--pt-box-shadow-color: color;
 
 /* Input */
 --pt-input-color: color;
---pt-input-fontsize: value;
+--pt-input-font-size: value;
 --pt-input-background: color;
---pt-input-bordercolor: color;
---pt-input-borderradius: value;
---pt-inputFocus-bordercolor: color;
---pt-inputFocus-background: color;
---pt-inputFocus-boxshadowcolor: color;
+--pt-input-border-color: color;
+--pt-input-border-radius: value;
+--pt-input-focus-border-color: color;
+--pt-input-focus-background: color;
+--pt-input-focus-box-shadow-color: color;
 
 /* Dots */
 --pt-dots-color: color;
 
 /* Meridiem */
---pt-meridiem-bordercolor: color;
---pt-meridiem-borderradius: value;
---pt-meridiemLabel-bordercolor: color;
---pt-meridiemspan-color: color;
---pt-meridiemspan-fontsize: value;
---pt-meridiemspanhover-color: color;
---pt-meridiemspanhover-background: color;
---pt-meridiemchecked-color: color;
---pt-meridiemchecked-background: color;
+--pt-meridiem-border-color: color;
+--pt-meridiem-border-radius: value;
+--pt-meridiem-label-border-color: color;
+--pt-meridiem-color: color;
+--pt-meridiem-font-size: value;
+--pt-meridiem-hover-color: color;
+--pt-meridiem-hover-background: color;
+--pt-meridiem-checked-color: color;
+--pt-meridiem-checked-background: color;
 ```
 
 Custom Theme:
@@ -205,8 +205,8 @@ Class `.picktime--customname`
 ```css
 .picktime--customname {
   --pt-background: #fff;
-  --pt-borderColor: #000;
-  --pt-borderRadius: 10px;
+  --pt-border-color: #000;
+  --pt-border-radius: 10px;
 }
 ```
 
