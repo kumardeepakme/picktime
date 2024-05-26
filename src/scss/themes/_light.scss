@@ -1,6 +1,9 @@
 @use 'sass:color';
 
 .picktime--light {
+  $dark: #23232b;
+  $light: #fff;
+
   // Main
   --pt-background: #{$light};
   --pt-foreground: #{$dark};
