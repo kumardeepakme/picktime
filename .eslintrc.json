@@ -1,31 +1,17 @@
 {
+  "root": true,
+  "extends": ["eslint:recommended", "prettier"],
   "env": {
     "browser": true,
     "es2021": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "prettier"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "rules": {
-    "spaced-comment": 0,
-    "no-console": 0,
-    "consistent-return": 0,
-    "func-names": 0,
-    "object-shorthand": 0,
-    "no-process-exit": 0,
-    "no-param-reassign": 0,
-    "no-return-await": 0,
-    "no-underscore-dangle": 0,
-    "no-plusplus": 0,
-    "class-methods-use-this": 0,
-    "no-restricted-syntax": 0,
-    "no-return-assign": 0,
-    "no-new": 0,
-    "no-multi-assign": ["error", { "ignoreNonDeclaration": true }],
-    "prefer-destructuring": [2, { "object": true, "array": false }],
-    "no-unused-vars": [2, { "argsIgnorePattern": "req|res|next|val" }]
+    "no-console": ["warn", { "allow": ["error"] }],
+    "no-unused-vars": "warn"
   }
 }

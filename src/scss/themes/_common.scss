@@ -1,0 +1,21 @@
+.picktime--theme-light,
+.picktime--theme-dark {
+  // PickTime
+  --pt-padding: 10px;
+  --pt-border-radius: 12px;
+  --pt-border: 1px solid var(--pt-border-color);
+  --pt-box-shadow: 0 1px 8px var(--pt-box-shadow-color);
+
+  // Inputs
+  --pt-input-font-size: 30px;
+  --pt-input-border-radius: 6px;
+  --pt-input-border: 1px solid var(--pt-input-border-color);
+
+  // Meridiem
+  --pt-meridiem-font-size: 10px;
+  --pt-meridiem-border-radius: 6px;
+  --pt-meridiem-border: 1px solid var(--pt-meridiem-border-color);
+
+  // Animation
+  --pt-animation: cubic-bezier(0.25, 1, 0.5, 1);
+}
