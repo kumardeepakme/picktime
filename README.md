@@ -504,4 +504,4 @@ inputTextElement.addEventListener('change', () => {
 
 If this package added value to your project, please consider buying me a cup of coffee. 🙏
 
-[![Buy me a coffee](bmc.png)](https://www.buymeacoffee.com/kumardeepakme)
+[![Buy me a coffee](bmc.png)](https://buymeacoffee.com/kumardeepak.com)

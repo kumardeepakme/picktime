@@ -84,7 +84,12 @@ export class PickTime {
   }
 
   // * METHODS
-  // SetTime
+  /**
+   *
+   *
+   * @param {Time} { hours, minutes, meridiem }
+   * @memberof PickTime
+   */
   setTime({ hours, minutes, meridiem }: Time): void {
     if (hours && !Number.isInteger(hours))
       throw new Error('setTime() "hours" must be an integer');
@@ -110,7 +115,11 @@ export class PickTime {
     this.#time.setTime({ hours, minutes, meridiem });
   }
 
-  // Disable
+  /**
+   *
+   *
+   * @memberof PickTime
+   */
   disable(): void {
     this.#PickerTemplate.picker
       .querySelectorAll('input[type=text]')
@@ -148,7 +157,11 @@ export class PickTime {
       });
   }
 
-  // Enable
+  /**
+   *
+   *
+   * @memberof PickTime
+   */
   enable(): void {
     this.#PickerTemplate.picker
       .querySelectorAll('input[type=text]')
@@ -186,7 +199,11 @@ export class PickTime {
       });
   }
 
-  // Destroy
+  /**
+   *
+   *
+   * @memberof PickTime
+   */
   destroy(): void {
     PickTime.pickers--;
 
@@ -205,7 +222,13 @@ export class PickTime {
   }
 
   // * GETTERS
-  // GetTime
+  /**
+   *
+   *
+   * @readonly
+   * @type {TimeOutput}
+   * @memberof PickTime
+   */
   get getTime(): TimeOutput {
     return this.#time.time;
   }
