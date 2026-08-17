@@ -1,25 +1,15 @@
-# -------------------
-# Ignore Files
-# -------------------
-.*
-~*
-.DS_Store
-package-lock.json
-
-# -------------------
-# Ignore Folders
-# -------------------
 node_modules/
-build/
 dist/
+demo-dist/
+*.tsbuildinfo
 
-# -------------------
-# Whitelist
-# -------------------
-!.babelrc
-!.editorconfig
-!.eslintrc.json
-!.gitignore
-!.npmignore
-!.prettierrc.json
-!.stylelintrc.json
+.DS_Store
+*.log
+npm-debug.log*
+
+test/__screenshots__/
+.vitest-attachments/
+playwright-report/
+
+# local working notes, never published
+TODO.md

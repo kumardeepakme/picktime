@@ -1,22 +1,50 @@
 {
   "name": "picktime",
-  "version": "2.0.1",
-  "description": "Simple & Intuitive Time Picker for JavaScript.",
-  "main": "./dist/picktime.min.js",
-  "module": "./dist/picktime.min.js",
-  "jsdelivr": "./dist/picktime.umd.js",
-  "browserslist": [
-    "last 1 year"
+  "version": "3.0.0",
+  "description": "Accessible, form-associated time picker web component. Native form participation, Intl-driven i18n, zero-config styling.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "default": "./dist/element.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/index.js",
+    "**/index.ts"
   ],
   "engines": {
-    "node": ">=20.0.0"
+    "node": "^20.19.0 || >=22.12.0"
   },
-  "type": "module",
+  "browserslist": [
+    "chrome >= 114",
+    "edge >= 114",
+    "firefox >= 125",
+    "safari >= 17"
+  ],
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
-    "prepublishOnly": "npm run build",
-    "pretty": "npx prettier . --write"
+    "dev": "vite",
+    "build": "vite build && npm run build:types",
+    "build:types": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "format": "biome format --write",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check:package": "publint && attw --pack --ignore-rules cjs-resolves-to-esm no-resolution",
+    "prepublishOnly": "npm run build && npm run check:package",
+    "release": "npm run build && changeset publish"
   },
   "repository": {
     "type": "git",
@@ -28,8 +56,11 @@
     "time picker",
     "time",
     "picker",
-    "timer",
-    "javascript",
+    "web-component",
+    "custom-element",
+    "form-associated",
+    "accessible",
+    "a11y",
     "typescript"
   ],
   "author": "Kumar Deepak <inbox@kumardeepak.me> (https://kumardeepak.me)",
@@ -38,30 +69,25 @@
     "url": "https://github.com/kumardeepakme/picktime/issues"
   },
   "homepage": "https://github.com/kumardeepakme/picktime#readme",
-  "contributors": [],
-  "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.4",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9.33.0",
-    "eslint-config-prettier": "^10.1.8",
-    "postcss": "^8.5.6",
-    "prettier": "^3.6.2",
-    "rollup": "^4.46.3",
-    "rollup-plugin-scss": "^4.0.1",
-    "sass": "^1.90.0",
-    "stylelint": "^16.23.1",
-    "stylelint-config-standard-scss": "^15.0.1",
-    "tslib": "^2.8.1",
-    "typescript": "^5.9.2"
-  },
   "dependencies": {
-    "@floating-ui/dom": "^1.7.3"
+    "@floating-ui/dom": "^1.8.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@biomejs/biome": "^2.5.8",
+    "@changesets/changelog-github": "^1.0.0",
+    "@changesets/cli": "^3.0.0",
+    "@fontsource/maple-mono": "^5.3.0",
+    "@types/node": "^26.2.0",
+    "@vitest/browser": "^4.1.10",
+    "@vitest/browser-playwright": "^4.1.10",
+    "browserslist": "^4.28.8",
+    "lightningcss": "^1.33.0",
+    "playwright": "^1.62.1",
+    "publint": "^0.3.23",
+    "shiki": "^4.4.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
   }
 }

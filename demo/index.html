@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PickTime - a time picker that behaves like a real form control</title>
+    <meta
+      name="description"
+      content="PickTime is a form-associated time picker web component. Native form participation, Intl-driven i18n, full keyboard control, zero stylesheet imports."
+    />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./demo.css" />
+  </head>
+  <body>
+    <!-- Icon sprite (Hugeicons, MIT) -->
+    <svg class="sprite" aria-hidden="true" focusable="false"><defs>
+      <symbol id="i-github" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M10 20.568c-3.429 1.157-6.286 0-8-3.568"/><path d="M10 22v-3.242c0-.598.184-1.118.48-1.588c.204-.322.064-.78-.303-.88C7.134 15.452 5 14.107 5 9.645c0-1.16.38-2.25 1.048-3.2c.166-.236.25-.354.27-.46c.02-.108-.015-.247-.085-.527c-.283-1.136-.264-2.343.16-3.43c0 0 .877-.287 2.874.96c.456.285.684.428.885.46s.469-.035 1.005-.169A9.5 9.5 0 0 1 13.5 3a9.6 9.6 0 0 1 2.343.28c.536.134.805.2 1.006.169c.2-.032.428-.175.884-.46c1.997-1.247 2.874-.96 2.874-.96c.424 1.087.443 2.294.16 3.43c-.07.28-.104.42-.084.526s.103.225.269.461c.668.95 1.048 2.04 1.048 3.2c0 4.462-2.134 5.807-5.177 6.643c-.367.101-.507.559-.303.88c.296.47.48.99.48 1.589V22"/></g></symbol>
+      <symbol id="i-npm" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"><path d="M2.5 12c0-4.478 0-6.717 1.391-8.109c1.391-1.39 3.63-1.39 8.109-1.39c4.478 0 6.718 0 8.109 1.39c1.391 1.392 1.391 3.63 1.391 8.11c0 4.478 0 6.717-1.391 8.108S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12Z"/><path stroke-linecap="round" d="M8 7h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-1.5V9.5H12V17H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1"/></g></symbol>
+      <symbol id="i-favourite" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.41 19.968C7.59 17.858 2 13.035 2 8.694C2 5.826 4.105 3.5 7 3.5c1.5 0 3 .5 5 2.5c2-2 3.5-2.5 5-2.5c2.895 0 5 2.326 5 5.194c0 4.34-5.59 9.164-8.41 11.274c-.95.71-2.23.71-3.18 0"/></symbol>
+      <symbol id="i-package" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 22c-.818 0-1.6-.33-3.163-.99C4.946 19.366 3 18.543 3 17.16V7m9 15c.818 0 1.6-.33 3.163-.99C19.054 19.366 21 18.543 21 17.16V7m-9 15V11.355M8.326 9.691L5.405 8.278C3.802 7.502 3 7.114 3 6.5s.802-1.002 2.405-1.778l2.92-1.413C10.13 2.436 11.03 2 12 2s1.871.436 3.674 1.309l2.921 1.413C20.198 5.498 21 5.886 21 6.5s-.802 1.002-2.405 1.778l-2.92 1.413C13.87 10.564 12.97 11 12 11s-1.871-.436-3.674-1.309M6 12l2 1m9-9L7 9"/></symbol>
+      <symbol id="i-keyboard" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path d="M14.5 7h-5c-3.287 0-4.931 0-6.038.908a4 4 0 0 0-.554.554C2 9.57 2 11.212 2 14.5s0 4.931.908 6.038a4 4 0 0 0 .554.554C4.57 22 6.212 22 9.5 22h5c3.288 0 4.931 0 6.038-.908q.304-.25.554-.554C22 19.43 22 17.788 22 14.5c0-3.287 0-4.931-.908-6.038a4 4 0 0 0-.554-.554C19.43 7 17.788 7 14.5 7Z"/><path stroke-linejoin="round" d="M12 7V5a1 1 0 0 1 1-1a1 1 0 0 0 1-1V2M7 12h1m3.5 0h1m3.5 0h1M7 17h10"/></g></symbol>
+      <symbol id="i-translate" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5.828h2.7m3.3 0H9.5m-1.8 0h1.8m-1.8 0V5m1.8.828c-.316 1.131-.98 2.201-1.736 3.141M5.836 11a19 19 0 0 0 1.928-2.03m0 0c-.385-.453-.925-1.184-1.08-1.515m1.08 1.514l1.157 1.203M13.5 19l.833-2m4.167 2l-.833-2m-3.334 0L16 13l1.667 4m-3.334 0h3.334"/><path stroke-linecap="round" d="M14 10V8c0-2.828 0-4.243-.879-5.121C12.243 2 10.828 2 8 2s-4.243 0-5.121.879C2 3.757 2 5.172 2 8s0 4.243.879 5.121C3.757 14 5.172 14 8 14h2"/><path d="M10 16c0-2.828 0-4.243.879-5.121C11.757 10 13.172 10 16 10s4.243 0 5.121.879C22 11.757 22 13.172 22 16s0 4.243-.879 5.121C20.243 22 18.828 22 16 22s-4.243 0-5.121-.879C10 20.243 10 18.828 10 16Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 16.5c0 1.404 0 2.107.337 2.611a2 2 0 0 0 .552.552C5.393 20 6.096 20 7.5 20M20 7.5c0-1.404 0-2.107-.337-2.611a2 2 0 0 0-.552-.552C18.607 4 17.904 4 16.5 4"/></g></symbol>
+      <symbol id="i-layers-01" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="m8.643 3.146l-1.705.788C4.313 5.147 3 5.754 3 6.75s1.313 1.603 3.938 2.816l1.705.788c1.652.764 2.478 1.146 3.357 1.146s1.705-.382 3.357-1.146l1.705-.788C19.687 8.353 21 7.746 21 6.75s-1.313-1.603-3.938-2.816l-1.705-.788C13.705 2.382 12.879 2 12 2s-1.705.382-3.357 1.146"/><path d="M20.788 11.097c.141.199.212.406.212.634c0 .982-1.313 1.58-3.938 2.776l-1.705.777c-1.652.753-2.478 1.13-3.357 1.13s-1.705-.377-3.357-1.13l-1.705-.777C4.313 13.311 3 12.713 3 11.731c0-.228.07-.435.212-.634"/><path d="M20.377 16.266c.415.331.623.661.623 1.052c0 .981-1.313 1.58-3.938 2.776l-1.705.777C13.705 21.624 12.879 22 12 22s-1.705-.376-3.357-1.13l-1.705-.776C4.313 18.898 3 18.299 3 17.318c0-.391.208-.72.623-1.052"/></g></symbol>
+      <symbol id="i-paint-board" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10c.842 0 2 .116 2-1c0-.609-.317-1.079-.631-1.546c-.46-.683-.917-1.359-.369-2.454c.667-1.333 1.778-1.333 3.482-1.333c.851 0 1.851 0 3.018-.167c2.101-.3 2.5-1.592 2.5-3.5Z"/><circle cx="9.5" cy="8.5" r="1.5"/><circle cx="16.5" cy="9.5" r="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M7.125 15H7m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g></symbol>
+      <symbol id="i-rocket-01" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linejoin="round" d="m11.801 6.49l1.486-1.486c1.673-1.673 3.862-2.367 6.18-2.48c.902-.044 1.352-.066 1.714.295c.361.362.34.812.295 1.714c-.113 2.318-.807 4.507-2.48 6.18L17.511 12.2c-1.224 1.223-1.572 1.571-1.315 2.898c.254 1.014.499 1.995-.238 2.732c-.894.895-1.71.895-2.604 0l-7.183-7.183c-.895-.894-.895-1.71 0-2.604c.737-.737 1.718-.492 2.732-.238c1.327.257 1.675-.091 2.898-1.315Z"/><path stroke-linecap="round" d="m2.5 21.5l5-5m1 5l2-2m-8-4l2-2"/><path stroke-linecap="round" stroke-linejoin="round" d="M17.125 7H17m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g></symbol>
+      <symbol id="i-checkmark-badge-01" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18.99 19H19m-.01 0c-.622.617-1.75.464-2.542.464c-.972 0-1.44.19-2.133.883C13.725 20.937 12.934 22 12 22s-1.725-1.063-2.315-1.653c-.694-.693-1.162-.883-2.133-.883c-.791 0-1.92.154-2.543-.464c-.627-.622-.473-1.756-.473-2.552c0-1.007-.22-1.47-.937-2.186C2.533 13.196 2 12.662 2 12s.533-1.196 1.6-2.262c.64-.64.936-1.274.936-2.186c0-.791-.154-1.92.464-2.543c.622-.627 1.756-.473 2.552-.473c.912 0 1.546-.297 2.186-.937C10.804 2.533 11.338 2 12 2s1.196.533 2.262 1.6c.64.64 1.274.936 2.186.936c.791 0 1.92-.154 2.543.464c.627.622.473 1.756.473 2.552c0 1.007.22 1.47.937 2.186C21.467 10.804 22 11.338 22 12s-.533 1.196-1.6 2.262c-.716.717-.936 1.18-.936 2.186c0 .796.154 1.93-.473 2.552Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.893s1.2.652 1.8 1.607c0 0 1.8-3.75 4.2-5"/></g></symbol>
+      <symbol id="i-typescript-01" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"><path d="M2.5 12c0-4.478 0-6.717 1.391-8.109c1.391-1.39 3.63-1.39 8.109-1.39c4.478 0 6.718 0 8.109 1.39c1.391 1.392 1.391 3.63 1.391 8.11c0 4.478 0 6.717-1.391 8.108S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12Z"/><path stroke-linecap="round" d="M18 12h-1.8a1.2 1.2 0 0 0-1.2 1.2v.6a1.2 1.2 0 0 0 1.2 1.2h.6a1.2 1.2 0 0 1 1.2 1.2v.6a1.2 1.2 0 0 1-1.2 1.2H15m-6.5-6h2m2 0h-2m0 0v6"/></g></symbol>
+      <symbol id="i-text-font" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m14 19l-2.893-8.252C9.763 6.916 9.092 5 8 5s-1.763 1.916-3.107 5.748L2 19m2.5-7h7m10.47 1.94v4.5m0-4.5c.046-.824.048-1.45-.05-1.963c-.234-1.206-1.494-1.933-2.714-2.081c-1.168-.142-2.104.159-3.052 1.54m5.815 2.503h-2.843c-.437 0-.878.021-1.299.138c-2.573.716-2.384 4.323.196 4.768c.287.05.58.07.87.058c.677-.03 1.302-.358 1.84-.773c.627-.486 1.236-1.165 1.236-2.19z"/></symbol>
+      <symbol id="i-cursor-magic-selection-03" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10.465 19.007l-2.444-7.023h0c-.92-2.64-1.379-3.961-.688-4.651c.69-.69 2.012-.231 4.655.687l7.013 2.438c1.466.51 2.2.764 2.357 1.257c.044.136.06.28.045.422c-.053.516-.717.917-2.046 1.719c-.851.514-1.277.77-1.391 1.159q-.048.166-.04.338c.018.404.37.755 1.076 1.456l2.32 2.305h0c.346.345.52.518.6.71a1.04 1.04 0 0 1 0 .79c-.079.193-.252.366-.598.712c-.345.345-.518.517-.711.596a1.04 1.04 0 0 1-.788 0c-.193-.079-.366-.251-.711-.596h0L16.786 19c-.694-.694-1.041-1.04-1.44-1.061a1 1 0 0 0-.356.043c-.382.116-.635.536-1.141 1.376h0c-.792 1.314-1.188 1.971-1.697 2.029a1 1 0 0 1-.445-.047c-.485-.16-.737-.885-1.242-2.334M9 4V2M5 5L3.5 3.5M4 9H2m3 4l-1.5 1.5m11-11L13 5"/></symbol>
+      <symbol id="i-user-check-01" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M3 21c.284-3.694 3.3-6.78 7-6.962q.469-.023 1-.038l.995.066a7.5 7.5 0 0 1 3.005.849"/><circle cx="11" cy="7" r="4"/><path d="M14 19.333s.875 0 1.75 1.667c0 0 2.78-4.167 5.25-5"/></g></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m16 7l3.066 2.643C20.356 10.754 21 11.31 21 12s-.645 1.246-1.934 2.357L16 17M8 7L4.934 9.643C3.644 10.754 3 11.31 3 12s.645 1.246 1.934 2.357L8 17"/></symbol>
+      <symbol id="i-clock-01" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l2 2"/></g></symbol>
+      <symbol id="i-puzzle" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" d="M12.828 6.001a3 3 0 1 0-5.658 0c-2.285.008-3.504.09-4.292.878S2.008 8.886 2 11.17a3 3 0 1 1 0 5.66c.008 2.284.09 3.503.878 4.291s2.007.87 4.291.878a3 3 0 1 1 5.66 0c2.284-.008 3.503-.09 4.291-.878s.87-2.007.878-4.292a3 3 0 1 0 0-5.658c-.008-2.285-.09-3.504-.878-4.292c-.788-.789-2.007-.87-4.292-.878Z"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" d="m15 2l.539 2.392a5.39 5.39 0 0 0 4.07 4.07L22 9l-2.392.539a5.39 5.39 0 0 0-4.07 4.07L15 16l-.539-2.392a5.39 5.39 0 0 0-4.07-4.07L8 9l2.392-.539a5.39 5.39 0 0 0 4.07-4.07zM7 12l.385 1.708a3.85 3.85 0 0 0 2.907 2.907L12 17l-1.708.385a3.85 3.85 0 0 0-2.907 2.907L7 22l-.385-1.708a3.85 3.85 0 0 0-2.907-2.907L2 17l1.708-.385a3.85 3.85 0 0 0 2.907-2.907z"/></symbol>
+      <symbol id="i-shield-01" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.709 3.495C16.817 2.554 14.5 2 12 2s-4.816.554-6.709 1.495c-.928.462-1.392.693-1.841 1.419S3 6.342 3 7.748v3.49c0 5.683 4.542 8.842 7.173 10.196c.734.377 1.1.566 1.827.566s1.093-.189 1.827-.566C16.457 20.08 21 16.92 21 11.237V7.748c0-1.406 0-2.108-.45-2.834s-.913-.957-1.841-1.419"/></symbol>
+      
+      <symbol id="i-coffee-02" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path d="M18.25 10.5h1.39c1.852 0 2.402.265 2.357 1.584c-.073 2.183-1.058 4.72-4.997 5.416"/><path d="M5.946 20.615C2.572 18.02 2.075 14.34 2.001 10.5c-.031-1.659.45-2 2.658-2h10.682c2.208 0 2.69.341 2.658 2c-.074 3.84-.57 7.52-3.945 10.115c-.96.738-1.77.885-3.135.885H9.081c-1.364 0-2.174-.147-3.135-.886Z"/><path stroke-linejoin="round" d="M11.309 2.5C10.762 2.839 10 4 10 5.5M7.54 4S7 4.5 7 5.5M14.001 4c-.273.17-.501 1-.501 1.5"/></g></symbol>
+      </defs></svg>
+
+    <!-- Hero ------------------------------------------------------------- -->
+    <section class="band band-dark hero" id="top">
+      <div class="wrap">
+        <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-clock-01"/></svg> PickTime v3</p>
+        <h1>A time picker for <em>any form</em>, in <em>any framework</em>.</h1>
+        <p class="lede">
+          One custom element. No framework wrapper, no stylesheet to import, no
+          hidden input to keep in sync.
+        </p>
+
+        <ul class="badges">
+          <li><svg class="i" aria-hidden="true"><use href="#i-paint-board"/></svg> Zero stylesheet imports</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-package"/></svg> 1 runtime dependency</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-user-check-01"/></svg> ARIA spinbuttons</li>
+          <li><svg class="i" aria-hidden="true"><use href="#i-typescript-01"/></svg> ESM + types</li>
+        </ul>
+
+        <div class="hero-demo">
+          <form class="hero-form">
+            <label for="hero">Meeting time</label>
+            <pick-time id="hero" name="meeting" value="09:30" theme="dark"></pick-time>
+          </form>
+          <div class="code-card">
+            <div class="code-head">
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="code-name">booking.html</span>
+            </div>
+            <pre class="hero-code" data-lang="html"><code>&lt;form&gt;
+  &lt;label for="meeting"&gt;Meeting time&lt;/label&gt;
+  &lt;pick-time id="meeting" name="meeting" value="09:30"&gt;&lt;/pick-time&gt;
+  &lt;button&gt;Book&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script type="module"&gt;
+  import 'picktime';
+
+  form.addEventListener('submit', e =&gt; {
+    new FormData(form).get('meeting'); // "09:30"
+  });
+&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+
+    <!-- Install ---------------------------------------------------------- -->
+    <section class="band band-light">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-rocket-01"/></svg> 01 / install</p>
+          <h2>Add it in <em>one line</em></h2>
+          <p>
+            One dependency, one import. That import registers
+            <code>&lt;pick-time&gt;</code> and carries its styles with it.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="card step">
+            <h3><span class="step-n">1</span> Install</h3>
+            <pre class="out" data-lang="bash"><code>npm install picktime</code></pre>
+          </div>
+          <div class="card step">
+            <h3><span class="step-n">2</span> Import once</h3>
+            <pre class="out" data-lang="js"><code>import 'picktime';</code></pre>
+          </div>
+          <div class="card step">
+            <h3><span class="step-n">3</span> Use it</h3>
+            <pre class="out" data-lang="html"><code>&lt;pick-time name="start"&gt;&lt;/pick-time&gt;</code></pre>
+          </div>
+        </div>
+
+        <p class="note">
+          <svg class="i" aria-hidden="true"><use href="#i-shield-01"/></svg> Chrome 114+, Edge 114+, Firefox 125+, Safari 17+.
+          No build step required for the CDN route.
+        </p>
+      </div>
+    </section>
+
+    <!-- How to use ------------------------------------------------------- -->
+    <section class="band band-dark">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-puzzle"/></svg> 02 / how to use</p>
+          <h2>Drop it into <em>anything</em></h2>
+          <p>
+            It is a custom element, so there is nothing to wrap. Pick your stack
+            and copy the block.
+          </p>
+        </div>
+
+        <div class="tabs card">
+          <div class="tablist" role="tablist" aria-label="Framework">
+            <button type="button" role="tab" id="tab-html" aria-controls="panel-html" aria-selected="true">HTML</button>
+            <button type="button" role="tab" id="tab-react" aria-controls="panel-react" aria-selected="false" tabindex="-1">React</button>
+            <button type="button" role="tab" id="tab-vue" aria-controls="panel-vue" aria-selected="false" tabindex="-1">Vue</button>
+            <button type="button" role="tab" id="tab-svelte" aria-controls="panel-svelte" aria-selected="false" tabindex="-1">Svelte</button>
+            <button type="button" role="tab" id="tab-angular" aria-controls="panel-angular" aria-selected="false" tabindex="-1">Angular</button>
+          </div>
+
+          <div role="tabpanel" id="panel-html" aria-labelledby="tab-html">
+            <pre class="out" data-lang="html"><code>&lt;script type="module" src="https://cdn.jsdelivr.net/npm/picktime/+esm"&gt;&lt;/script&gt;
+
+&lt;form&gt;
+  &lt;label for="start"&gt;Start&lt;/label&gt;
+  &lt;pick-time id="start" name="start" value="09:30"&gt;&lt;/pick-time&gt;
+  &lt;button&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            <p class="note">Nothing else. The form submits <code>start=09:30</code>.</p>
+          </div>
+
+          <div role="tabpanel" id="panel-react" aria-labelledby="tab-react" hidden>
+            <pre class="out" data-lang="jsx"><code>import 'picktime';
+import { useState } from 'react';
+
+export function Booking() {
+  const [time, setTime] = useState('09:30');
+
+  return (
+    &lt;pick-time
+      name="start"
+      value={time}
+      min="09:00"
+      max="17:00"
+      onChange={e =&gt; setTime(e.target.value)}
+    /&gt;
+  );
+}</code></pre>
+            <p class="note">
+              React 19+ passes props and listeners to custom elements natively.
+              On React 18 use a <code>ref</code> to set <code>value</code> and
+              attach the <code>change</code> listener.
+            </p>
+          </div>
+
+          <div role="tabpanel" id="panel-vue" aria-labelledby="tab-vue" hidden>
+            <pre class="out" data-lang="js"><code>// vite.config.js
+vue({
+  template: {
+    compilerOptions: { isCustomElement: tag =&gt; tag === 'pick-time' }
+  }
+})</code></pre>
+            <pre class="out" data-lang="vue"><code>&lt;script setup&gt;
+import 'picktime';
+import { ref } from 'vue';
+const time = ref('09:30');
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;pick-time name="start" :value="time"
+             @change="time = $event.target.value" /&gt;
+&lt;/template&gt;</code></pre>
+          </div>
+
+          <div role="tabpanel" id="panel-svelte" aria-labelledby="tab-svelte" hidden>
+            <pre class="out" data-lang="svelte"><code>&lt;script&gt;
+  import 'picktime';
+  let time = $state('09:30');
+&lt;/script&gt;
+
+&lt;pick-time
+  name="start"
+  value={time}
+  onchange={e =&gt; (time = e.target.value)}
+/&gt;</code></pre>
+            <p class="note">No configuration needed.</p>
+          </div>
+
+          <div role="tabpanel" id="panel-angular" aria-labelledby="tab-angular" hidden>
+            <pre class="out" data-lang="ts"><code>import 'picktime';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  template: `
+    &lt;pick-time name="start" [value]="time"
+               (change)="time = $any($event.target).value"&gt;
+    &lt;/pick-time&gt;
+  `
+})
+export class BookingComponent { time = '09:30'; }</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Playground ------------------------------------------------------- -->
+    <section class="band band-light">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-cursor-magic-selection-03"/></svg> 03 / playground</p>
+          <h2>Try every option</h2>
+          <p>Change an attribute, watch the element react. Nothing is faked.</p>
+        </div>
+
+        <div class="playground card">
+          <form id="playground-form" class="preview">
+            <label for="play">Meeting time</label>
+            <pick-time id="play" name="meeting" value="09:30" theme="light"></pick-time>
+            <output id="readout"></output>
+          </form>
+
+          <fieldset class="controls">
+            <legend>Attributes</legend>
+
+            <label>
+              <span class="label-text">Clock</span>
+              <select data-attr="hour-cycle">
+                <option value="" selected>Auto (follow locale)</option>
+                <option value="12">12-hour, AM/PM</option>
+                <option value="24">24-hour, 00-23</option>
+                <option value="h11">12-hour, 0-11</option>
+                <option value="h24">24-hour, 1-24</option>
+              </select>
+            </label>
+
+            <label>
+              <span class="label-text">Minute step</span>
+              <input type="number" data-attr="minute-step" min="1" max="59" value="1" />
+            </label>
+
+            <label>
+              <span class="label-text">Earliest allowed</span>
+              <input type="text" data-attr="min" placeholder="09:00" />
+            </label>
+
+            <label>
+              <span class="label-text">Latest allowed</span>
+              <input type="text" data-attr="max" placeholder="17:00" />
+            </label>
+
+            <label>
+              <span class="label-text">Panel position</span>
+              <select data-attr="placement">
+                <option value="bottom" selected>Below</option>
+                <option value="top">Above</option>
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+              </select>
+            </label>
+
+            <label>
+              <span class="label-text">Theme</span>
+              <select data-attr="theme">
+                <option value="">Follow system</option>
+                <option value="light" selected>Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
+
+            <div class="toggles">
+              <label><input type="checkbox" data-bool="seconds" /> Seconds</label>
+              <label><input type="checkbox" data-bool="required" /> Required</label>
+              <label><input type="checkbox" data-bool="disabled" /> Disabled</label>
+              <label><input type="checkbox" data-bool="readonly" /> Readonly</label>
+            </div>
+
+            <label class="span">
+              <span class="label-row">Locale</span>
+              <select data-attr="locale">
+                <option value="" selected>Browser default</option>
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="de-DE">German</option>
+                <option value="ja-JP">Japanese</option>
+                <option value="ar-EG">Arabic</option>
+              </select>
+            </label>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+
+    <!-- Forms ------------------------------------------------------------ -->
+    <section class="band band-dark">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-checkmark-badge-01"/></svg> 04 / the point</p>
+          <h2>It is a <em>real</em> form control</h2>
+          <p>
+            Form-associated through <code>ElementInternals</code>. No hidden
+            input, no serialiser, no submit handler doing cleanup.
+            <code>required</code>, <code>min</code> and <code>max</code> block
+            submission the way the platform does it.
+          </p>
+        </div>
+
+        <div class="split">
+          <form id="real-form" class="card">
+            <div class="field-row">
+              <label for="from">Opens at</label>
+              <pick-time id="from" name="from" value="09:00" min="08:00" max="18:00" required theme="dark"></pick-time>
+            </div>
+            <div class="field-row">
+              <label for="to">Closes at</label>
+              <pick-time id="to" name="to" value="17:30" min="08:00" max="18:00" required theme="dark"></pick-time>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+          </form>
+          <pre id="form-output" class="card out">Submit to see the FormData payload.</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Keyboard --------------------------------------------------------- -->
+    <section class="band band-light">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-keyboard"/></svg> 05 / accessibility</p>
+          <h2>Built for the <em>keyboard</em></h2>
+          <p>
+            Each segment is an ARIA spinbutton that announces its value and
+            range. Tab is trapped inside the panel while it is open, and focus
+            returns to the field when it closes.
+          </p>
+        </div>
+
+        <div class="split">
+          <div class="card kbd-demo">
+            <label for="kb">Focus me and press Tab</label>
+            <pick-time id="kb" name="kb" value="09:30" seconds theme="light"></pick-time>
+            <p class="note">
+              Tab cycles hours, minutes, seconds, AM, PM, then wraps. It never
+              escapes to the page behind.
+            </p>
+          </div>
+          <dl class="keys card">
+            <div><dt><kbd>↓</kbd></dt><dd>Open the panel from the field</dd></div>
+            <div><dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>Step the focused segment</dd></div>
+            <div><dt><kbd>Page Up</kbd></dt><dd>Step in larger jumps</dd></div>
+            <div><dt><kbd>Home</kbd> <kbd>End</kbd></dt><dd>Jump to the segment bounds</dd></div>
+            <div><dt><kbd>Tab</kbd></dt><dd>Cycle segments, trapped in the panel</dd></div>
+            <div><dt><kbd>Esc</kbd></dt><dd>Close and return focus</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typing ----------------------------------------------------------- -->
+    <section class="band band-dark">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-text-font"/></svg> 06 / input</p>
+          <h2>Type what you <em>actually</em> type</h2>
+          <p>
+            The field is not <code>readonly</code>. Parsing is lenient, and
+            anything unparseable sets <code>badInput</code> rather than throwing.
+          </p>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <label for="typed">Try "9:30 pm", "0930", "21:30", "9.30"</label>
+            <pick-time id="typed" name="typed" theme="dark"></pick-time>
+            <output id="typed-out" class="note">Nothing entered yet.</output>
+          </div>
+          <ul class="accepts card">
+            <li><code>9:30 pm</code><span>21:30</span></li>
+            <li><code>930pm</code><span>21:30</span></li>
+            <li><code>0930</code><span>09:30</span></li>
+            <li><code>21:30</code><span>21:30</span></li>
+            <li><code>9.30</code><span>09:30</span></li>
+            <li><code>12am</code><span>00:00</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- i18n ------------------------------------------------------------- -->
+    <section class="band band-light">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-translate"/></svg> 07 / i18n</p>
+          <h2>The locale decides, not you</h2>
+          <p>
+            Hour cycle, day-period labels and formatting all come from
+            <code>Intl</code>. Omit <code>hour-cycle</code> and each locale gets
+            what it expects.
+          </p>
+        </div>
+
+        <div class="locales">
+          <div class="card"><span class="tag">en-US</span><pick-time locale="en-US" value="14:05" theme="light"></pick-time></div>
+          <div class="card"><span class="tag">de-DE</span><pick-time locale="de-DE" value="14:05" theme="light"></pick-time></div>
+          <div class="card"><span class="tag">ja-JP</span><pick-time locale="ja-JP" hour-cycle="12" value="14:05" theme="light"></pick-time></div>
+          <div class="card"><span class="tag">en-GB</span><pick-time locale="en-GB" value="14:05" theme="light"></pick-time></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top layer -------------------------------------------------------- -->
+    <section class="band band-dark band-center">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-layers-01"/></svg> 08 / rendering</p>
+          <h2>Nothing can <em>clip</em> it</h2>
+          <p>
+            The panel is a real popover, so it renders in the top layer. An
+            <code>overflow: hidden</code> ancestor and a stacking context both
+            lose. Escape and click-outside come free with it.
+          </p>
+        </div>
+
+        <div class="clipper card">
+          <label for="clipped">Inside overflow: hidden</label>
+          <pick-time id="clipped" value="12:00" theme="dark"></pick-time>
+        </div>
+      </div>
+    </section>
+
+    <!-- Theming ---------------------------------------------------------- -->
+    <section class="band band-light">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow"><svg class="i eyebrow-i" aria-hidden="true"><use href="#i-paint-board"/></svg> 09 / theming</p>
+          <h2>Yours to <em>restyle</em></h2>
+          <p>
+            Styles live in a shadow root, so your CSS cannot break it and it
+            cannot leak into you. Thirty-six custom properties are the seams,
+            and they are the same names v2 used, so an existing theme ports
+            across by moving it from a class onto the element.
+          </p>
+        </div>
+
+        <div class="split theme-split">
+          <div class="card themed-showcase">
+            <p class="showcase-label">Click the field</p>
+            <pick-time id="brand" class="kd" value="10:00" theme="light"></pick-time>
+          </div>
+          <pre class="card out" data-lang="css"><code>pick-time.kd {
+  /* Main */
+  --pt-background: #274bce;
+  --pt-foreground: #fff;
+
+  /* Panel */
+  --pt-padding: 10px;
+  --pt-border-radius: 12px;
+  --pt-border-color: #1b338c;
+  --pt-box-shadow-color: rgb(0 0 0 / 0.2);
+
+  /* Segments */
+  --pt-input-color: var(--pt-foreground);
+  --pt-input-background: var(--pt-background);
+  --pt-input-font-size: 30px;
+  --pt-input-border-radius: 10px;
+  --pt-input-border-color: #1b338c;
+  --pt-input-focus-border-color: var(--pt-foreground);
+  --pt-input-focus-background: #213fad;
+
+  /* Dots */
+  --pt-dots-color: #1b338c;
+
+  /* Meridiem */
+  --pt-meridiem-font-size: 10px;
+  --pt-meridiem-border-radius: 50%;
+  --pt-meridiem-color: var(--pt-foreground);
+  --pt-meridiem-hover-color: var(--pt-foreground);
+  --pt-meridiem-hover-background: #213fad;
+  --pt-meridiem-border-color: var(--pt-input-border-color);
+  --pt-meridiem-checked-color: var(--pt-foreground);
+  --pt-meridiem-checked-background: #ff6e46;
+  --pt-meridiem-checked-border-color: var(--pt-foreground);
+
+  /* Trigger, kept neutral so only the panel carries the theme */
+  --pt-field-background: #fff;
+  --pt-field-color: #1b338c;
+  --pt-field-border-color: #cbd6f5;
+  --pt-field-border-radius: 10px;
+}</code></pre>
+        </div>
+
+        <div class="parts">
+          <p class="parts-head">
+            <svg class="i" aria-hidden="true"><use href="#i-sparkles"/></svg>
+            Colour and spacing come from the properties above. When you need to
+            reach a specific piece of the structure, target its part:
+          </p>
+          <dl class="parts-grid">
+            <div><dt><code>::part(input)</code></dt><dd>The text field you click or type into</dd></div>
+            <div><dt><code>::part(picker)</code></dt><dd>The floating panel itself</dd></div>
+            <div><dt><code>::part(spin)</code></dt><dd>Every number segment at once</dd></div>
+            <div><dt><code>::part(hours)</code></dt><dd>Just the hours segment</dd></div>
+            <div><dt><code>::part(minutes)</code></dt><dd>Just the minutes segment</dd></div>
+            <div><dt><code>::part(seconds)</code></dt><dd>Just the seconds segment</dd></div>
+            <div><dt><code>::part(separator)</code></dt><dd>The dots between segments</dd></div>
+            <div><dt><code>::part(meridiem)</code></dt><dd>The AM/PM group</dd></div>
+            <div><dt><code>::part(period)</code></dt><dd>A single AM or PM button</dd></div>
+            <div><dt><code>::part(arrow)</code></dt><dd>The pointer joining panel to field</dd></div>
+          </dl>
+          <pre class="card out" data-lang="css"><code>pick-time::part(picker) {
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.25);
+}
+
+pick-time::part(hours) {
+  font-variant-numeric: tabular-nums slashed-zero;
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer ----------------------------------------------------------- -->
+    <footer class="band band-dark footer">
+      <div class="wrap">
+        <p class="copyright">&copy; 2026 Kumar Deepak. All Rights Reserved.</p>
+
+        <div class="footer-links">
+          <a href="https://github.com/kumardeepakme/picktime" aria-label="PickTime on GitHub">
+            <svg class="i i-lg" aria-hidden="true"><use href="#i-github"/></svg><span>GitHub</span>
+          </a>
+          <a href="https://www.npmjs.com/package/picktime" aria-label="PickTime on npm">
+            <svg class="i i-lg" aria-hidden="true"><use href="#i-npm"/></svg><span>npm</span>
+          </a>
+          <a href="https://buymeacoffee.com/kumardeepak.com" aria-label="Buy Kumar Deepak a coffee">
+            <svg class="i i-lg" aria-hidden="true"><use href="#i-coffee-02"/></svg><span>Buy me a coffee</span>
+          </a>
+        </div>
+
+        <p class="built">
+          Built with <svg class="i i-heart" aria-hidden="true"><use href="#i-favourite"/></svg> by
+          <a href="https://kumardeepak.com">Kumar Deepak</a>
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="./demo.ts"></script>
+  </body>
+</html>

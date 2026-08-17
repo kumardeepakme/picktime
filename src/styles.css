@@ -1,0 +1,427 @@
+/*
+ * Authored as modern CSS (nesting, color-mix) and compiled by Lightning CSS.
+ * Scoped to the shadow root, so no selector here can leak or be leaked into.
+ *
+ * Geometry, spacing and colour are ported verbatim from the v2 SCSS: 58px
+ * square segments, a 6px dot separator, 28px meridiem squares, a 12px panel
+ * radius on 10px padding, and a drop-shadow filter rather than box-shadow so
+ * the arrow inherits it. The --pt-* names carry over unchanged; they now live
+ * on :host instead of a .picktime--theme-* class.
+ */
+
+:host {
+  /* Main */
+  --pt-background: #fff;
+  --pt-foreground: #23232b;
+  --pt-accent-color: #9c766d;
+
+  /* Panel */
+  --pt-padding: 10px;
+  --pt-border-radius: 12px;
+  --pt-border-color: color-mix(in srgb, var(--pt-accent-color) 18%, #e4e4e9);
+  --pt-border: 1px solid var(--pt-border-color);
+  --pt-box-shadow-color: rgb(35 35 43 / 0.1);
+  --pt-box-shadow: 0 1px 8px var(--pt-box-shadow-color);
+
+  /* Segments */
+  --pt-input-color: var(--pt-foreground);
+  --pt-input-background: var(--pt-background);
+  --pt-input-font-size: 30px;
+  --pt-input-border-radius: 6px;
+  --pt-input-border-color: color-mix(
+    in srgb,
+    var(--pt-accent-color) 10%,
+    #e4e4e9
+  );
+  --pt-input-border: 1px solid var(--pt-input-border-color);
+  --pt-input-focus-border-color: color-mix(
+    in srgb,
+    var(--pt-accent-color) 32%,
+    #9d9db0
+  );
+  --pt-input-focus-background: #f7f7f9;
+
+  /* Dots */
+  --pt-dots-color: rgb(35 35 43 / 0.8);
+
+  /* Meridiem */
+  --pt-meridiem-font-size: 10px;
+  --pt-meridiem-border-radius: 6px;
+  --pt-meridiem-border-color: var(--pt-input-border-color);
+  --pt-meridiem-border: 1px solid var(--pt-meridiem-border-color);
+  --pt-meridiem-color: var(--pt-foreground);
+  --pt-meridiem-hover-color: var(--pt-foreground);
+  --pt-meridiem-hover-background: #f2f2f4;
+  --pt-meridiem-checked-color: var(--pt-background);
+  --pt-meridiem-checked-background: var(--pt-foreground);
+  --pt-meridiem-checked-border-color: var(--pt-background);
+
+  /* Field. Separate from the panel segments so the trigger can match a host
+     form's rhythm without changing the picker's own geometry. */
+  --pt-field-padding: 0.5em 0.75em;
+  --pt-field-border-radius: var(--pt-input-border-radius);
+  --pt-field-border-color: var(--pt-input-border-color);
+  --pt-field-background: var(--pt-background);
+  --pt-field-color: var(--pt-foreground);
+
+  /*
+   * Numerals get their own stack. `ui-monospace` resolves to the platform's
+   * UI-grade mono, giving even digit widths and unmistakable 1/7 and 6/8
+   * shapes. Set to `inherit` to match your body font.
+   * A webfont is deliberately not shipped: @font-face declared inside a shadow
+   * root does not reliably apply, so it would have to be forced on every page.
+   */
+  --pt-numeral-font:
+    ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", "Roboto Mono",
+    Menlo, Consolas, monospace;
+
+  /* Motion */
+  --pt-duration: 0.25s;
+  --pt-animation: cubic-bezier(0.25, 1, 0.5, 1);
+
+  display: inline-block;
+  color: var(--pt-foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :host(:not([theme="light"])) {
+    --pt-background: #23232b;
+    --pt-foreground: #fff;
+    --pt-accent-color: #c19b91;
+    --pt-border-color: color-mix(in srgb, var(--pt-accent-color) 16%, #2f2f39);
+    --pt-box-shadow-color: rgb(35 35 43 / 0.45);
+    --pt-input-border-color: color-mix(
+      in srgb,
+      var(--pt-accent-color) 10%,
+      #454555
+    );
+    --pt-input-focus-border-color: color-mix(
+      in srgb,
+      var(--pt-accent-color) 28%,
+      #5c5c71
+    );
+    --pt-input-focus-background: #2e2e39;
+    --pt-dots-color: rgb(255 255 255 / 0.8);
+    --pt-meridiem-hover-background: #2e2e39;
+  }
+}
+
+:host([theme="dark"]) {
+  --pt-background: #23232b;
+  --pt-foreground: #fff;
+  --pt-accent-color: #c19b91;
+  --pt-border-color: color-mix(in srgb, var(--pt-accent-color) 16%, #2f2f39);
+  --pt-box-shadow-color: rgb(35 35 43 / 0.45);
+  --pt-input-border-color: color-mix(
+    in srgb,
+    var(--pt-accent-color) 10%,
+    #454555
+  );
+  --pt-input-focus-border-color: color-mix(
+    in srgb,
+    var(--pt-accent-color) 28%,
+    #5c5c71
+  );
+  --pt-input-focus-background: #2e2e39;
+  --pt-dots-color: rgb(255 255 255 / 0.8);
+  --pt-meridiem-hover-background: #2e2e39;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+/*
+ * A class rule setting `display` outbids the UA's `[hidden] { display: none }`,
+ * so segments toggled with `.hidden = true` would still render. Restate it.
+ */
+[hidden] {
+  /* biome-ignore lint/complexity/noImportantStyles: outbidding the UA rule is
+     the entire point; a class rule setting display would win otherwise */
+  display: none !important;
+}
+
+/* Trigger ----------------------------------------------------------------- */
+
+.field {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--pt-field-padding);
+  border: 1px solid var(--pt-field-border-color);
+  border-radius: var(--pt-field-border-radius);
+  background: var(--pt-field-background);
+  color: var(--pt-field-color);
+  font: inherit;
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: inherit;
+  transition: border-color 0.2s var(--pt-animation);
+
+  &:focus-visible {
+    outline: 0 none;
+    border-color: var(--pt-input-focus-border-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+:host(:state(user-invalid)) .field {
+  border-color: #d93025;
+}
+
+/* Panel ------------------------------------------------------------------- */
+
+.picker {
+  position: absolute;
+  inset: auto;
+  width: max-content;
+  margin: 0;
+  padding: var(--pt-padding);
+  direction: ltr;
+  outline: 0 none;
+  overflow: visible;
+  line-height: 1;
+  border: var(--pt-border);
+  border-radius: var(--pt-border-radius);
+  background: var(--pt-background);
+  color: var(--pt-foreground);
+  /* drop-shadow rather than box-shadow so the arrow is shadowed with it */
+  filter: drop-shadow(var(--pt-box-shadow));
+
+  &:popover-open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:popover-open {
+      animation: picktime-drop var(--pt-duration) var(--pt-animation) both;
+    }
+  }
+}
+
+:host([animation="fade"]) .picker:popover-open {
+  animation-name: picktime-fade;
+}
+
+:host([animation="none"]) .picker:popover-open {
+  animation: none;
+}
+
+@keyframes picktime-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes picktime-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Segments ---------------------------------------------------------------- */
+
+.spin {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  aspect-ratio: 1 / 1;
+  padding: 5px;
+  color: var(--pt-input-color);
+  background: var(--pt-input-background);
+  border: var(--pt-input-border);
+  border-radius: var(--pt-input-border-radius);
+  font-family: var(--pt-numeral-font);
+  font-size: var(--pt-input-font-size);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  line-height: 1;
+  text-align: center;
+  cursor: ns-resize;
+  user-select: none;
+  transition:
+    border-color 0.2s var(--pt-animation),
+    background-color 0.2s var(--pt-animation);
+
+  &:focus {
+    outline: 0 none;
+    border-color: var(--pt-input-focus-border-color);
+    background: var(--pt-input-focus-background);
+  }
+}
+
+/* The separator is two dots, drawn rather than typed, as in v2. */
+.dots {
+  position: relative;
+  width: 6px;
+  height: 24px;
+  padding: 0 10px;
+  user-select: none;
+  pointer-events: none;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pt-dots-color);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+}
+
+/* Meridiem ---------------------------------------------------------------- */
+
+.meridiem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 58px;
+  margin: 0 0 0 10px;
+  text-align: center;
+}
+
+.period {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*
+   * 28px is the v2 square for "AM"/"PM", but day-period labels are not always
+   * two ASCII characters: ja-JP uses 午前/午後, which wrapped and overflowed the
+   * panel. Grow past the square when the locale needs it.
+   */
+  min-width: 28px;
+  max-height: 50px;
+  padding: 5px;
+  white-space: nowrap;
+  color: var(--pt-meridiem-color);
+  background: transparent;
+  border: var(--pt-meridiem-border);
+  border-radius: var(--pt-meridiem-border-radius);
+  font-family: inherit;
+  font-size: var(--pt-meridiem-font-size);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    color 0.2s var(--pt-animation),
+    background-color 0.2s var(--pt-animation);
+
+  &:hover,
+  &:focus-visible {
+    outline: 0 none;
+    color: var(--pt-meridiem-hover-color);
+    background: var(--pt-meridiem-hover-background);
+  }
+
+  &[aria-checked="true"] {
+    color: var(--pt-meridiem-checked-color);
+    background: var(--pt-meridiem-checked-background);
+    border-color: var(--pt-meridiem-checked-border-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* Arrow ------------------------------------------------------------------- */
+
+.arrow {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  user-select: none;
+  pointer-events: none;
+
+  & svg {
+    position: absolute;
+    top: 5px;
+    left: 0;
+
+    &:first-of-type {
+      transform: scale(1.1);
+      fill: var(--pt-border-color);
+    }
+
+    &:last-of-type {
+      fill: var(--pt-background);
+    }
+  }
+
+  &[data-side="bottom"] {
+    & svg {
+      rotate: 180deg;
+    }
+
+    & svg:first-of-type {
+      margin-top: 1px;
+    }
+  }
+
+  &[data-side="right"] {
+    & svg {
+      rotate: 90deg;
+    }
+
+    & svg:first-of-type {
+      margin-left: 1px;
+    }
+  }
+
+  &[data-side="left"] {
+    & svg {
+      rotate: -90deg;
+    }
+
+    & svg:first-of-type {
+      margin-left: -1px;
+    }
+  }
+
+  &[data-side="top"] svg:first-of-type {
+    margin-top: -1px;
+  }
+}
+
+/* Screen-reader only ------------------------------------------------------ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
