@@ -1,0 +1,42 @@
+name: Bug report
+description: Something is not behaving as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+
+  - type: input
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: A link to a minimal reproduction (StackBlitz, CodePen, or a repo).
+    validations:
+      required: true
+
+  - type: textarea
+    id: markup
+    attributes:
+      label: Markup
+      description: The <pick-time> element and any relevant CSS or JS.
+      render: html
+
+  - type: input
+    id: version
+    attributes:
+      label: picktime version
+      placeholder: 3.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Safari 18.2
+    validations:
+      required: true

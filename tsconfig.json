@@ -1,15 +1,30 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "preserve",
     "moduleResolution": "bundler",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "types": ["vite/client", "node"],
+
+    /*
+     * The demo imports the library by name. Without this, TypeScript resolves
+     * it by self-reference through `exports` into `dist/`, so `typecheck`
+     * silently depends on a prior build - green locally, red in CI, which
+     * lints and typechecks before it builds. Mirrors the `picktime` alias in
+     * vite.config.ts and vitest.config.ts.
+     */
+    "paths": { "picktime": ["./src/index.ts"] },
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "declaration": true,
+    "noEmit": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "demo/**/*.ts", "*.config.ts"]
 }

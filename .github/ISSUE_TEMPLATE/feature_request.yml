@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest a capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What are you trying to do that is awkward or impossible today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: What would the markup or JavaScript look like?
+      render: html
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

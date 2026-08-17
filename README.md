@@ -1,506 +1,393 @@
 ![PickTime](cover.png)
 
-![npm bundle size](https://img.shields.io/bundlephobia/min/picktime)
-[![](https://data.jsdelivr.com/v1/package/npm/picktime/badge?style=rounded)](https://www.jsdelivr.com/package/npm/picktime)
-[![GitHub license](https://img.shields.io/github/license/kumardeepakme/picktime)](https://github.com/kumardeepakme/picktime)
+[![npm](https://img.shields.io/npm/v/picktime)](https://www.npmjs.com/package/picktime)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/picktime)](https://bundlephobia.com/package/picktime)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/picktime/badge?style=rounded)](https://www.jsdelivr.com/package/npm/picktime)
+[![License](https://img.shields.io/github/license/kumardeepakme/picktime)](https://github.com/kumardeepakme/picktime/blob/main/LICENSE)
 
 # PickTime
 
-Simple & Intuitive Time Picker for JavaScript.
+**[Live demo and playground](https://kumardeepakme.github.io/picktime/)**
+
+A time picker that behaves like a real form control.
+
+`<pick-time>` is a form-associated custom element. It submits with the form,
+participates in constraint validation, formats itself from the user's locale,
+and needs no stylesheet import and no framework wrapper.
+
+```html
+<form>
+  <label for="start">Start</label>
+  <pick-time id="start" name="start" value="09:30"></pick-time>
+</form>
+```
+
+```js
+new FormData(form).get('start'); // "09:30"
+```
 
 ## Features
 
-- 💡 Minimal & Intuitive Design
-- 🖱️ Mouse Wheel Time Adjustment
-- ⬆️ Up & Down Arrow Key Controls
-- 🕒 12 & 24 Hour Clock Support
-- ⏱️ Configurable Minute Steps
-- ⏰ Predefined Time Settings
-- 🛠️ Developer-Friendly Output
-- 📍 Customizable Picker Position
-- 🌙 Light & Dark Themes Available
-- 🎨 Fully Customizable CSS
+- **Real form participation** via `ElementInternals`, so `FormData`,
+  `form.reset()`, `:invalid`, and `required` work without a hidden input
+- **Accessible** ARIA spinbuttons, a focus trap while the panel is open,
+  screen-reader announcements, and no tab-order hijacking
+- **Typed entry** that accepts what people actually type: `9:30 pm`, `0930`, `21:30`
+- **Locale-aware** hour cycle and day-period labels, driven by `Intl`
+- **`min` / `max`**, including reversed ranges that cross midnight
+- **Top-layer rendering** through the Popover API, so no ancestor can clip it
+- **No stylesheet to import**; theming via CSS custom properties and `::part()`
+- **Typed**, ESM-only, one runtime dependency
 
 ## Installation
 
-#### **NPM**
-
-```shell
-npm i picktime
+```sh
+npm install picktime
 ```
 
-#### **Yarn**
-
-```shell
-yarn add picktime
+```js
+import 'picktime';
 ```
 
-#### **CDN**
+That single import registers `<pick-time>` and brings its styles with it.
 
-Using jsDelivr CDN:
+### CDN
 
 ```html
-<!-- CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picktime/dist/picktime.min.css">
-
-<!-- JS -->
-<script src="https://cdn.jsdelivr.net/npm/picktime/dist/picktime.umd.js"></script>
-```
-
-Using unpkg CDN:
-
-```html
-<!-- CSS -->
-<link rel="stylesheet" href="https://www.unpkg.com/browse/picktime@2.0.0/dist/picktime.min.css">
-
-<!-- JS -->
-<script src="https://www.unpkg.com/browse/picktime@2.0.0/dist/picktime.umd.js"></script>
+<script type="module">
+  import 'https://cdn.jsdelivr.net/npm/picktime/+esm';
+</script>
 ```
 
 ## Usage
 
-```js
-import 'picktime/dist/picktime.min.css';
+### HTML
 
-import { PickTime } from 'picktime';
-
-const picktime = new PickTime(inputTextElement, { options });
+```html
+<pick-time name="start" value="09:30" min="09:00" max="17:00"
+           minute-step="15" hour-cycle="h12" locale="en-US"></pick-time>
 ```
 
-## Options
-
-PickTime offers a variety of options to customize your time picker to suit your needs.
-
-- [animation](#animation)
-- [arrow](#arrow)
-- [clock](#clock)
-- [minuteSteps](#minutesteps)
-- [offset](#offset)
-- [theme](#theme)
-- [time](#time)
-- [upDownKeys](#updownkeys)
-- [wheelSpin](#wheelspin)
-
-### **`animation`**
-
-Type: `string`<br>
-Values: `drop` (default) | `fade` | `string`
-
-✨ Define the opening animation of the picker.
-
-Example:
+### JavaScript
 
 ```js
-const picktime = new PickTime(inputTextElement, {
-  animation: 'drop' // or "fade"
-});
+import 'picktime';
+import type { PickTimeElement } from 'picktime';
+
+const picker = document.querySelector('pick-time');
+
+picker.value;          // "09:30"  - always the machine format
+picker.valueAsNumber;  // 34200    - seconds since midnight
+picker.valueAsObject;  // { hours: 9, minutes: 30, seconds: 0, meridiem: 'am' }
+
+picker.min = '09:00';
+picker.showPicker();
+
+picker.addEventListener('change', () => console.log(picker.value));
 ```
 
-Additionally, you can specify a custom animation name to apply your own animation. Below is an example of how to use the `animation` option to set a custom animation.
-
-- JavaScript
-
-  ```js
-  /*
-   * Set the "animation" property with a custom value
-   * For example - "flip"
-   */
-  const picktime = new PickTime(inputTextElement, {
-    animation: 'flip'
-  });
-  ```
-
-- CSS
-
-  ```css
-   /* 1. (if required) Add "prespective" to the parent container, i.e body in our case */
-   body {
-     perspective: 500px;
-   }
-
-   /* 2. Define the animation keyframes */
-   @keyframes flip {
-     0% {
-       transform: rotateX(-80deg);
-       opacity: 0;
-     }
-     100% {
-       transform: rotateX(0);
-       opacity: 1;
-     }
-   }
-
-   /* 3. Define class .picktime--animation-NAMEHERE */
-  .picktime--animation-flip {
-    animation: flip 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-  ```
-
-### **`arrow`**
-
-Type: `boolean`<br>
-Values: `true` (default) | `false`
-
-✨ Enable or disable arrow indicator in the picker.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  arrow: true // or false
-});
-```
-
-### **`clock`**
-
-Type: `number`<br>
-Values: `12` (default) | `24`
-
-✨ Set the clock format. Choose between a 12-hour or 24-hour clock.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  clock: 24 // or 12
-});
-```
-
-### **`minuteSteps`**
-
-Type: `number`<br>
-Values: `1` (default) | `1 - 59`
-
-✨ Define the step interval for minutes selection.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  minuteSteps: 5 // Set the step interval (e.g., 1, 5, 10)
-});
-```
-
-### **`offset`**
-
-Type: `object`<br>
-
-- `left` - Horizontal offset
-  - Type: `number`<br>
-    Values: `0` (default) | `+ve integer`
-- `top` - Vertical offset
-  - Type: `number`<br>
-    Values: `2` (default) | `+ve integer`
-
-✨ Set the offset position of the picker relative to the input element.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  offset: {
-    left: 10, // Horizontal offset
-    top: 10  // Vertical offset
-  }
-});
-```
-
-### **`theme`**
-
-Type: `string`<br>
-Values: `light` (default) | `dark` | `string`
-
-✨ Apply a theme to the picker.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  theme: 'dark' // or "light"
-});
-```
-
-Additionally, you have complete control over the CSS and can create a custom theme. To do this, simply override the CSS variables listed below with your desired values:
-
-```css
-/* Main */
---pt-background: color;
---pt-foreground: color;
-
-/* PickTime */
---pt-border-color: color;
---pt-box-shadow-color: color;
-
-/* Input */
---pt-input-color: color;
---pt-input-background: color;
---pt-input-border-color: color;
---pt-input-focus-border-color: color;
---pt-input-focus-background: color;
-
-/* Dots */
---pt-dots-color: color;
-
-/* Meridiem */
---pt-meridiem-color: color;
---pt-meridiem-hover-color: color;
---pt-meridiem-hover-background: color;
---pt-meridiem-border-color: color;
---pt-meridiem-checked-color: color;
---pt-meridiem-checked-background: color;
---pt-meridiem-checked-border-color: color;
-
-/* PickTime */
---pt-padding: padding;
---pt-border-radius: radius;
---pt-border: width style color;
---pt-box-shadow: shadow;
-
-/* Inputs */
---pt-input-font-size: size;
---pt-input-border-radius: radius;
---pt-input-border: width style color;
-
-/* Meridiem */
---pt-meridiem-font-size: size;
---pt-meridiem-border-radius: radius;
---pt-meridiem-border: width style color;
-```
-
-Here is an example of how to define a custom theme.
-
-- JavaScript
-
-  ```js
-  /*
-   * Set the "theme" property with a custom value
-   * For example - "kd"
-   */
-  const picktime = new PickTime(inputTextElement, {
-    theme: 'kd'
-  });
-  ```
-
-- CSS
-
-  ```css
-  /* Define class .picktime--theme-NAMEHERE */
-  .picktime--theme-kd {
-    /* Main */
-    --pt-background: #274bce;
-    --pt-foreground: #fff;
-
-    /* PickTime */
-    --pt-border-color: #1b338c;
-    --pt-box-shadow-color: rgba(0, 0, 0, 0.2);
-
-    /* Input */
-    --pt-input-color: var(--pt-foreground);
-    --pt-input-background: var(--pt-background);
-    --pt-input-border-color: #1b338c;
-    --pt-input-focus-border-color: var(--pt-foreground);
-    --pt-input-focus-background: #213fad;
-
-    /* Dots */
-    --pt-dots-color: #1b338c;
-
-    /* Meridiem */
-    --pt-meridiem-color: var(--pt-foreground);
-    --pt-meridiem-hover-color: var(--pt-foreground);
-    --pt-meridiem-hover-background: #213fad;
-    --pt-meridiem-border-color: var(--pt-input-border-color);
-    --pt-meridiem-checked-color: var(--pt-foreground);
-    --pt-meridiem-checked-background: #ff6e46;
-    --pt-meridiem-checked-border-color: var(--pt-foreground);
-
-    /* PickTime */
-    --pt-padding: 10px;
-    --pt-border-radius: 12px;
-    --pt-border: 1px solid var(--pt-border-color);
-    --pt-box-shadow: 0 1px 8px var(--pt-box-shadow-color);
-
-    /* Inputs */
-    --pt-input-font-size: 30px;
-    --pt-input-border-radius: 10px;
-    --pt-input-border: 1px solid var(--pt-input-border-color);
-
-    /* Meridiem */
-    --pt-meridiem-font-size: 10px;
-    --pt-meridiem-border-radius: 50%;
-    --pt-meridiem-border: 1px solid var(--pt-meridiem-border-color);
-  }
-  ```
-
-  > 🚨 If you are specifying a custom theme, you must define all the CSS variables.
-
-  > 🌟 Above theme colors are inspired by [kumardeepak.me](https://kumardeepak.me)
-
-- Output
-
-  > 🤩 Applying the above theme will result in this beautiful picker theme.
-
-  ![PickTime Custom Theme](custom-theme.png)
-
-### **`time`**
-
-Type: `object`<br>
-
-- `hours` - Predefined hours
-  - Type: `number`<br>
-    Values: `10` (default) | `1 - 23`
-- `minutes` - Predefined hours
-  - Type: `number`<br>
-    Values: `0` (default) | `0 - 59`
-- `meridiem`
-  - Type: `string | null`<br>
-    Values: `am` (default) | `pm` | `null` (for 24-hour format)
-
-✨ Predefine the time settings for the picker. Defaults to "10:00 AM"
-
-Example:
-
-```js
-// Set "09:00 AM"
-const picktime = new PickTime(inputTextElement, {
-  time: {
-    hours: 9, // Predefined hours
-    minutes: 0, // Predefined minutes
-    meridiem: 'am' // 'am', 'pm', or null for 24-hour format
-  }
-});
-```
-
-### **`upDownKeys`**
-
-Type: `boolean`<br>
-Values: `true` (default) | `false`
-
-✨ Enable/Disable the use of up & down arrow keys for time adjustment.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  upDownKeys: true // or false
-});
-```
-
-### **`wheelSpin`**
-
-Type: `boolean`<br>
-Values: `true` (default) | `false`
-
-✨ Enable/Disable mouse wheel controls for time adjustment.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement, {
-  wheelSpin: true // or false
-});
-```
+`value` is always `HH:mm` (or `HH:mm:ss` with `seconds`), the same format
+`<input type="time">` uses. What the user sees is derived from their locale and
+never stored, so the display and the value cannot drift apart.
+
+## Attributes
+
+| Attribute | Type | Default | Description |
+|---|---|---|---|
+| `value` | `HH:mm` / `HH:mm:ss` | empty | Initial value. Also the value `form.reset()` returns to. |
+| `name` | string | - | Field name used on submission. |
+| `min` | `HH:mm` | - | Earliest allowed time. |
+| `max` | `HH:mm` | - | Latest allowed time. Set below `min` for a range crossing midnight. |
+| `minute-step` | 1-59 | `1` | Minutes per step. |
+| `second-step` | 1-59 | `1` | Seconds per step. |
+| `hour-cycle` | `12` \| `24` \| `h11` \| `h12` \| `h23` \| `h24` | from locale | Clock format. Use `12` or `24` unless you need the edge cases below. |
+| `locale` | BCP 47 tag | browser default | Locale for formatting and labels. |
+| `placement` | `top` \| `bottom` \| `left` \| `right` | `bottom` | Preferred panel side; flips when it would overflow. |
+| `offset` | number | `6` | Gap in pixels between field and panel. |
+| `theme` | `light` \| `dark` | system | Forces a colour scheme. |
+| `seconds` | boolean | off | Shows a seconds segment. |
+| `animation` | `drop` \| `fade` \| `none` | `drop` | Panel open animation. |
+| `required` | boolean | off | Empty becomes a validation error. |
+| `disabled` | boolean | off | Disables the control. |
+| `readonly` | boolean | off | Displays the value but blocks editing. |
+
+### Clock formats
+
+`hour-cycle="12"` and `hour-cycle="24"` cover almost every case. The four CLDR
+names exist because locales genuinely disagree about how to show midnight:
+
+| Value | Hours run | Midnight shows as | Used by |
+|---|---|---|---|
+| `12` (alias of `h12`) | 1-12 + AM/PM | `12 AM` | en-US, en-AU |
+| `24` (alias of `h23`) | 00-23 | `00` | most of Europe, en-GB |
+| `h11` | 0-11 + AM/PM | `0 AM` | ja-JP |
+| `h24` | 1-24 | `24` | rare, some ja and it conventions |
+
+Omit the attribute and the locale decides. The `hourCycle` property always
+reports the resolved CLDR name, so `hour-cycle="24"` reads back as `h23`.
+
+## Properties
+
+Every attribute has a matching property. Beyond those:
+
+| Property | Type | Description |
+|---|---|---|
+| `value` | `string` | Machine-format value, `''` when empty. |
+| `valueAsNumber` | `number \| null` | Seconds since midnight. |
+| `valueAsObject` | object \| `null` | `{ hours, minutes, seconds, meridiem }`. |
+| `open` | `boolean` | Whether the panel is showing. |
+| `form` | `HTMLFormElement \| null` | Owning form. |
+| `labels` | `NodeList` | Associated `<label>` elements. |
+| `validity` | `ValidityState` | Standard validity state. |
+| `validationMessage` | `string` | Message for the current failure. |
 
 ## Methods
 
-### **`setTime()`**
+| Method | Description |
+|---|---|
+| `showPicker()` | Opens the panel. Mirrors `<input type="time">.showPicker()`. |
+| `hidePicker()` | Closes the panel. |
+| `checkValidity()` | Standard constraint validation. |
+| `reportValidity()` | Validates and shows the browser's message. |
+| `focus()` | Focuses the field. |
 
-Returns: `void`<br>
-Parameter: `object`
+## Events
 
-- `hours` - Predefined hours
-  - Type: `number`<br>
-    Values: `1 - 23`
-- `minutes` - Predefined hours
-  - Type: `number`<br>
-    Values: `0 - 59`
-- `meridiem` - am/pm
-  - Type: `string | null`<br>
-    Values: `am` | `pm` | `null` (for 24-hour format)
+| Event | When |
+|---|---|
+| `input` | The value changed, including mid-spin. Composed, so it crosses shadow boundaries. |
+| `change` | The value was committed. |
 
-✨ Set the time properties of the picker after initialization.
+## Keyboard
 
-Example:
+| Key | Action |
+|---|---|
+| <kbd>↓</kbd> | Opens the panel from the field |
+| <kbd>↑</kbd> / <kbd>↓</kbd> | Steps the focused segment |
+| <kbd>Page Up</kbd> / <kbd>Page Down</kbd> | Steps in larger jumps |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Jumps to the segment's minimum or maximum |
+| <kbd>Tab</kbd> | Cycles segments, trapped inside the open panel |
+| <kbd>Esc</kbd> | Closes the panel |
+| <kbd>Enter</kbd> | Commits typed text |
 
-```js
-// Set time "02:30 PM" @ 12-Hour Clock
-const picktime = new PickTime(inputTextElement);
-picktime.setTime({ hours: 2, minutes: 30, meridiem: 'pm' });
+Segments follow the ARIA spinbutton pattern, so screen readers announce the
+value and its range as it changes.
 
-// Set time "02:30 PM" @ 24-Hour Clock
-const picktime = new PickTime(inputTextElement, { clock: 24 });
-picktime.setTime({ hours: 14, minutes: 30 });
+While the panel is open, <kbd>Tab</kbd> cycles the visible segments and wraps
+rather than escaping to the page behind. Hidden segments are skipped, so a
+24-hour picker cycles hours and minutes only. Closing the panel returns focus to
+the field.
+
+## Validation
+
+Constraint validation is the platform's, not a bespoke API.
+
+```html
+<form>
+  <pick-time name="start" required min="09:00" max="17:00"></pick-time>
+  <button>Submit</button>
+</form>
 ```
 
-### **`disable()`**
-
-Returns: `void`<br>
-Parameters: None
-
-✨ Disable the time picker, preventing user interaction.
-
-Example:
-
 ```js
-const picktime = new PickTime(inputTextElement);
-picktime.disable();
+picker.validity.valueMissing;   // required and empty
+picker.validity.rangeUnderflow; // earlier than min
+picker.validity.rangeOverflow;  // later than max
+picker.validity.badInput;       // typed text could not be parsed
+form.checkValidity();           // false while any of the above hold
 ```
 
-### **`enable()`**
+Once the user has edited the field, an invalid value also sets the
+`user-invalid` custom state, so it can be styled without flagging untouched
+fields:
 
-Returns: `void`<br>
-Parameters: None
-
-✨ Enable the time picker after it has been disabled.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement);
-picktime.enable();
+```css
+pick-time:state(user-invalid)::part(input) {
+  border-color: crimson;
+}
 ```
 
-### **`destroy()`**
+### Ranges that cross midnight
 
-Returns: `void`<br>
-Parameters: None
+Set `max` earlier than `min` to describe a window spanning midnight, matching
+the HTML spec for `<input type="time">`:
 
-✨ Destroy the time picker instance, removing it from the DOM and freeing up resources.
-
-Example:
-
-```js
-const picktime = new PickTime(inputTextElement);
-picktime.destroy();
+```html
+<!-- valid from 22:00 through 06:00 -->
+<pick-time min="22:00" max="06:00"></pick-time>
 ```
 
-## Getters
+## Theming
 
-### **`getTime`**
+Styles live in a shadow root, so page CSS cannot break the component and the
+component cannot leak. Customise through custom properties:
 
-Returns: `object`
+```css
+pick-time {
+  --pt-foreground: #23232b;
+  --pt-background: #fff;
+  --pt-accent-color: #9c766d;
 
-- `displayTime` (`string`) - Formatted time string (e.g., "10:30 AM").
-- `meridiem` (`string | null`) - Meridiem value ('am', 'pm', or null for 24-hour format).
-- `time` (`string`) - Time string in HH format (e.g., "10:30").
-- `utcOffset` (`string`) - UTC offset string (depends on the browser).
+  --pt-padding: 10px;
+  --pt-border-radius: 12px;
+  --pt-border-color: #e4e4e9;
 
-✨ Retrieve the current time from the picker.
+  --pt-field-padding: 12px 18px;
+  --pt-field-border-radius: 10px;
+  --pt-field-border-color: #e4e4e9;
+  --pt-field-background: #fff;
+  --pt-field-color: #23232b;
 
-Example:
+  --pt-input-font-size: 30px;
+  --pt-input-border-radius: 6px;
+  --pt-input-focus-border-color: #9d9db0;
+  --pt-input-focus-background: #f7f7f9;
+
+  --pt-dots-color: rgb(35 35 43 / 0.8);
+
+  --pt-meridiem-font-size: 10px;
+  --pt-meridiem-checked-background: var(--pt-foreground);
+  --pt-meridiem-checked-color: var(--pt-background);
+
+  --pt-duration: 0.25s;
+  --pt-animation: cubic-bezier(0.25, 1, 0.5, 1);
+}
+```
+
+![A PickTime panel restyled with the properties above](custom-theme.png)
+
+The trigger field has its own padding, radius, border and colour tokens
+(`--pt-field-*`), so it can match a host form's rhythm and palette without
+changing the panel's geometry. Everything else keeps the exact `--pt-*` names
+v2 used, so **an existing v2 theme ports over unchanged** - only the selector
+moves:
+
+```css
+/* v2 */  .picktime--theme-kd { ... }
+/* v3 */  pick-time.kd        { ... }
+```
+
+Digits render in their own stack (`--pt-numeral-font`), defaulting to the
+platform's UI monospace with tabular lining figures and a slashed zero, so the
+panel does not change width as values step. To match your body font instead:
+
+```css
+pick-time {
+  --pt-numeral-font: inherit;
+}
+```
+
+No webfont is bundled, deliberately: `@font-face` declared inside a shadow root
+does not reliably apply, so shipping one would mean forcing a document-level
+font import on every consumer.
+
+Light and dark follow `prefers-color-scheme`; `theme="light"` or `theme="dark"`
+overrides that.
+
+For anything the properties do not reach, use `::part()`:
+
+```css
+pick-time::part(input)  { border-width: 2px; }
+pick-time::part(picker) { box-shadow: 0 8px 30px rgb(0 0 0 / 0.18); }
+pick-time::part(spin)   { font-variant-numeric: tabular-nums; }
+```
+
+Exposed parts: `input`, `picker`, `spin`, `hours`, `minutes`, `seconds`,
+`separator`, `meridiem`, `period`, `arrow`.
+
+The panel itself is always laid out left to right, because a clock reads the
+same way in every locale. The element does not set `dir` on itself; the trigger
+field inherits direction from your page as any input would.
+
+## Frameworks
+
+Custom elements are framework-agnostic; there is nothing to wrap.
+
+**React 19+** passes props and listeners to custom elements natively:
+
+```jsx
+import 'picktime';
+
+<pick-time name="start" value="09:30" onChange={e => setTime(e.target.value)} />
+```
+
+**Vue** needs the tag marked as custom:
 
 ```js
-const picktime = new PickTime(inputTextElement);
-
-inputTextElement.addEventListener('change', () => {
-  console.log(picktime.getTime);
-});
+// vite.config.js
+vue({ template: { compilerOptions: { isCustomElement: tag => tag === 'pick-time' } } });
 ```
+
+**Svelte**, **Angular** (with `CUSTOM_ELEMENTS_SCHEMA`), and plain HTML work
+without configuration.
+
+### Registering under a different name
+
+The tag is `pick-time` because the HTML spec requires every custom element name
+to contain a hyphen; `<picktime>` is not a legal custom element. Pick your own
+hyphenated name if you prefer:
+
+```js
+import { PickTimeElement } from 'picktime/element'; // does not auto-register
+
+customElements.define('picktime-field', PickTimeElement);
+```
+
+Or use the exported helper, which is a no-op if the name is already taken:
+
+```js
+import { definePickTime } from 'picktime/element';
+
+definePickTime('picktime-field');
+```
+
+`definePickTime` also works after `import 'picktime'` has already claimed
+`pick-time`. A constructor can only back one tag name per registry, so any name
+after the first is registered with a subclass.
+
+## Migrating from v2
+
+v2's `new PickTime(inputEl, options)` still works and now mounts a `<pick-time>`
+next to your input, mirroring the value back so existing reads keep working. It
+logs a deprecation warning; prefer the element.
+
+| v2 option | v3 |
+|---|---|
+| `clock: 12 \| 24` | `hour-cycle="h12"` / `"h23"` |
+| `minuteSteps` | `minute-step` |
+| `time: { hours, minutes, meridiem }` | `value="09:30"` |
+| `theme: 'light' \| 'dark'` | `theme` attribute, or custom properties |
+| `offset: { top, left }` | `offset` attribute |
+| `upDownKeys`, `wheelSpin` | Always on; removing them was an accessibility regression |
+| `animation` | `--pt-duration`, `--pt-easing` |
+| `arrow` | Always shown; hide with `::part(arrow) { display: none }` |
+| `picker.getTime` | `picker.value`, `.valueAsNumber`, `.valueAsObject` |
+| `picker.setTime({...})` | `picker.value = '09:30'` |
+| `picker.disable()` / `.enable()` | `picker.disabled = true / false` |
+
+Behavioural changes worth knowing:
+
+- The input is no longer forced `readonly`, so users can type.
+- Stepping minutes past 59 no longer changes the hour; segments wrap
+  independently, as they do in `<input type="time">`.
+- `min`/`max` mark the value invalid rather than clamping it, matching the
+  platform.
+- Output is `HH:mm` rather than a display string. Use `Intl` or read the field
+  for a formatted version.
+
+## Browser support
+
+Chrome 114+, Edge 114+, Firefox 125+, Safari 17+.
+
+Set by the Popover API and `ElementInternals`. Positioning uses Floating UI
+rather than CSS anchor positioning, which has no equivalent of `shift()` and
+only reached Firefox in 147.
 
 ## License
 
-[MIT License](https://github.com/kumardeepakme/picktime/blob/main/LICENCE.md) © Kumar Deepak
+[MIT](LICENSE) © [Kumar Deepak](https://kumardeepak.me)
 
-## Support Project
+## Support project
 
 If this package added value to your project, please consider buying me a cup of coffee. 🙏
 
