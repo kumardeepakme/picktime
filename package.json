@@ -1,6 +1,6 @@
 {
   "name": "picktime",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Accessible, form-associated time picker web component. Native form participation, Intl-driven i18n, zero-config styling.",
   "type": "module",
   "exports": {

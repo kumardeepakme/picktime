@@ -1,5 +1,13 @@
 # picktime
 
+## 3.0.1
+
+### Patch Changes
+
+- [#3](https://github.com/kumardeepakme/picktime/pull/3) [`33c60d6`](https://github.com/kumardeepakme/picktime/commit/33c60d64370810d101577a7b233bf32a974378f1) Thanks [@kumardeepakme](https://github.com/kumardeepakme)! - README images now use absolute `raw.githubusercontent.com` URLs, so the cover
+  and theming screenshots render on npm as well as on GitHub. Relative paths only
+  resolved against the repository, leaving the npm page with broken images.
+
 ## 3.0.0
 
 A rewrite. PickTime is now a form-associated custom element rather than a class
