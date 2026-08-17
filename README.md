@@ -1,4 +1,4 @@
-![PickTime](cover.png)
+![PickTime](https://raw.githubusercontent.com/kumardeepakme/picktime/main/cover.png)
 
 [![npm](https://img.shields.io/npm/v/picktime)](https://www.npmjs.com/package/picktime)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/picktime)](https://bundlephobia.com/package/picktime)
@@ -254,7 +254,7 @@ pick-time {
 }
 ```
 
-![A PickTime panel restyled with the properties above](custom-theme.png)
+![A PickTime panel restyled with the properties above](https://raw.githubusercontent.com/kumardeepakme/picktime/main/custom-theme.png)
 
 The trigger field has its own padding, radius, border and colour tokens
 (`--pt-field-*`), so it can match a host form's rhythm and palette without
@@ -391,4 +391,4 @@ only reached Firefox in 147.
 
 If this package added value to your project, please consider buying me a cup of coffee. 🙏
 
-[![Buy me a coffee](bmc.png)](https://buymeacoffee.com/kumardeepak.com)
+[![Buy me a coffee](https://raw.githubusercontent.com/kumardeepakme/picktime/main/bmc.png)](https://buymeacoffee.com/kumardeepak.com)
